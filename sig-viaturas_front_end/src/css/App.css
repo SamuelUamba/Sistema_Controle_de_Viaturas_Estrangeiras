@@ -1,10 +1,31 @@
-.App {
+
+.App{
   text-align: center;
 }
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+.navbar_warapper a{
+  padding-left:30px ;
+  text-decoration: none;
+}
+
+.Container{
+  margin-top: 20px;
+}
+.Container h2{
+ text-align: center;
+}
+Form{
+  margin-top: 50px;
+  text-align: left;
+}
+.footer{
+  text-align: center;
+  background-color: dimgrey;
+  color: aliceblue;
+  margin-top: 20px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
