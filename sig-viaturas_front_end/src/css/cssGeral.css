@@ -1,0 +1,6 @@
+.div-flexEnd-style {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 5px 10px 10px 5px;
+}
