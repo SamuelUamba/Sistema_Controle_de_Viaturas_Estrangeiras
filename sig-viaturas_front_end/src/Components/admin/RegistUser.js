@@ -195,15 +195,6 @@ const RegistUser = () => {
 
 
 
-    // console.log(tipoUser)
-    // console.log(nomeUser)
-    // console.log(apelidoUser)
-    // console.log(dataNascimento)
-    // console.log(senhaUser)
-    // console.log(senhaUserConfrim)
-    // console.log(contacto)
-    // console.log(tipoUser)
-    // console.log(emailUser)
 
 
     return (
