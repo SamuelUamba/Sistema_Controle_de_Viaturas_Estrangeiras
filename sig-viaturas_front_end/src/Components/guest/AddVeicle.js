@@ -1,14 +1,53 @@
 import React from 'react'
-import { Form, Row, Col, Card, Button, InputGroup, Container, FormControl, Label } from 'react-bootstrap';
+import { Form, Row, Col, Card } from 'react-bootstrap';
 import { Grid } from '@material-ui/core';
+import{useState,useEffect} from 'react';
 
 
 const AddVeicle = () => {
-    return (
+
+
+//Região de Entrada/Entry region
+ const [RE_Regiao,SetRE_Regiao]=  useState("");
+ const [RE_estancia,SetRE_Estancia]=  useState("");
+
+//Detalhes do proprietário/Pessoa Autorizada(Datails of owner/autorised Person)
+ const [DP_data_entrada,setDP_Data_entrada]=  useState("");
+ const [DP_nome,SetDP_NomeProprietario]=  useState("");
+ const [DP_endereco,SetDP_Endereco]=  useState("");
+ const [DP_Carta,SetDP_NrCarta]=  useState("");
+ const [DP_local_Emissao,SetDP_LocalEmissao]=  useState("");
+ const [DP_Nacionalidade,SetDP_Nacionalidade]=  useState("");
+ const [DP_duracao,SetDP_Duracao]=  useState("");
+ const [DP_Email,SetDP_Email]=  useState("");
+ const [DP_cell,SetDP_Cell]=  useState("");
+ const [DP_objectivo,SetDP_Objectivo]=  useState("");
+
+ //Caracteristicas da viatura/Datails of Vehicle
+ const [CV_marca,SetCV_Marca]=  useState("");
+ const [CV_modelo,SetCV_Modelo]=  useState("");
+ const [CV_tipo,SetCV_Tipo]=  useState("");
+ const [CV_motor,SetCV_Nrmotor]=  useState("");
+ const [CV_quadro,SetCV_Nrquadro]=  useState("");
+ const [CV_valor,SetCV_Valor]=  useState("");
+ const [CV_cor,SetCV_Cor]=  useState("");
+ const [CV_lugares,SetCV_NrLugares]=  useState("");
+ const [CV_matricula,SetCV_Matricula]=  useState("");
+
+//Equipamento auxiliar,por exemplo reboque,barco/Auxiliary equipament(ex. trailer, boat,..)
+ const [Eqp_descricao,SetEqp_descricao]= useState("");
+ const [Eqp_marca,SetEqp_Marca]= useState("");
+ const [Eqp_modelo,SetEqp_Modelo]= useState("");
+ const [Eqp_id,SetEqp_ID]=useState("");
+ const [Eqp_valor,SetEqp_Valor]=useState("");
+
+  
+ 
+ return (
         <div>
             <h2>Formulário de entrada de veículos/Vehicle entry form </h2>
             <div >
-                <Form>
+                <Form onSubmit={}>
                     <Card>
                         <Card.Header>Região de Entrada/Entry region</Card.Header>
                         <Card.Body>
@@ -42,7 +81,7 @@ const AddVeicle = () => {
                         <Card.Header>Detalhes do proprietário/Pessoa Autorizada(Datails of owner/autorised Person)</Card.Header>
                         <Card.Body>
                              <Row className="mb-3">
-                                <Form.Group as={Col} controlId="Nome">
+                                <Form.Group as={Col} controlId="nome">
                                     <Form.Label>Nome/Name</Form.Label>
                                     <input className="form-control" type="text" />
                                 </Form.Group>
@@ -203,7 +242,7 @@ const AddVeicle = () => {
 
                         </Card.Body>
                     </Card>
-                    <button className="btn btn-primary ">Salvar</button>
+                    <button className="btn btn-primary " onClick={()=>}>Salvar</button>
                 </Form>
             </div>
         </div>
