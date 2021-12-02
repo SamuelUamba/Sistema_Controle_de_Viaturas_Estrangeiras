@@ -1,11 +1,15 @@
-import React from 'react'
+import React from 'react';
+import UpdateVeicle from '../../../Components/guest/UpdateVeicle';
+import SideBarComponent from '../../../Components/SidebarComponent/SideBarComponent';
 
-const index = () => {
+const UpdateVeiclePage = () => {
     return (
         <div>
-
+            <SideBarComponent
+                componente={<UpdateVeicle />}
+            />
         </div>
     )
 }
 
-export default index
+export default UpdateVeiclePage

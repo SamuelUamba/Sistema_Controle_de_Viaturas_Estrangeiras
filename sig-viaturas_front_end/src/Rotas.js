@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route } from "react-router-dom";
 import AddVeiclePage from './pages/guestPages/addVeicle';
+import ListVeiclePage from './pages/guestPages/listVeicles';
+import UpdateVeiclePage from './pages/guestPages/updateVeicles';
 
 
 const Rotas = () => {
@@ -8,8 +10,10 @@ const Rotas = () => {
     return (
         <HashRouter>
             <  Routes>
-
-                <Route exact path="/" element={<AddVeiclePage />} />
+                <Route exact path="/addVehicle" element={<AddVeiclePage />} />
+                <Route exact path="/updateVehicle" element={<UpdateVeiclePage />} />
+                <Route exact path="/listVehicle" element={<ListVeiclePage/>} />
+                
 
                 {/* <Route exact path="duc/home" element={<DucHomePage />} />
                 <Route exact path="/duc/list" element={<DucListPage />} />
