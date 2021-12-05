@@ -13,7 +13,7 @@ const Rotas = () => {
     return (
         <HashRouter>
             <  Routes>
-                <Route exact path="/addVehicle" element={<AddVeiclePage />} />
+                <Route exact path="/" element={<AddVeiclePage />} />
                 <Route exact path="/updateVehicle" element={<UpdateVeiclePage />} />
                 <Route exact path="/listVehicle" element={<ListVeiclePage/>} />
                 
