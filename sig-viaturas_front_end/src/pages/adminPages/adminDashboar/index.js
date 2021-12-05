@@ -1,17 +1,17 @@
 import React from 'react';
-import UserList2 from '../../../Components/admin/UserList2'
 import AdminSidebar from '../../../Components/admin/adminSideBar/AdminSidebar';
+import AdminDashboard from '../../../Components/admin/dashboard/AdminDashboard';
 
 
-const ListUsersPage = () => {
+const AdminDashboardPage = () => {
+
     return (
         <div>
             <AdminSidebar
-                componente={<UserList2 />}
+                componente={<AdminDashboard />}
             />
-
         </div>
     )
 }
 
-export default ListUsersPage
+export default AdminDashboardPage

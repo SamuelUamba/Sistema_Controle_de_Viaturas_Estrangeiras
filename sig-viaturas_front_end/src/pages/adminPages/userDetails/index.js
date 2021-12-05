@@ -1,17 +1,16 @@
 import React from 'react'
-import RegistUser from '../../../Components/admin/RegistUser';
+import UserDetails from '../../../Components/admin/detahesUser/UserDetails'
 import AdminSidebar from '../../../Components/admin/adminSideBar/AdminSidebar';
 
-
-
-const RegisterUserPage = () => {
+const UserDetailsPage = () => {
     return (
         <div>
             <AdminSidebar
-                componente={<RegistUser />}
+                componente={<UserDetails />}
             />
+
         </div>
     )
 }
 
-export default RegisterUserPage
+export default UserDetailsPage

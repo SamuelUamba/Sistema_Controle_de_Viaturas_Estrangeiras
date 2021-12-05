@@ -100,6 +100,7 @@ const RegistUser = () => {
     const validateForm = (e) => {
 
         e.preventDefault();
+
         console.log("submit")
 
         if (apelidoUser == "" || apelidoUser == null) {
@@ -162,6 +163,8 @@ const RegistUser = () => {
 
         if (condicao == false & condicao2 == true & senhaUserConfrim == senhaUser) {
 
+            console.log("condicoes de salvar satifeitas")
+
             const user = {
                 nome: nomeUser,
                 apelido: apelidoUser,
@@ -191,15 +194,9 @@ const RegistUser = () => {
 
     }
 
-
-
-
-
-
-
     return (
         <div>
-            <h1> Reisto de usuarios</h1>
+
             <Typography color="primary" gutterBottom>
                 <h4 style={{ marginTop: '30px' }}>Formulário de Registo de usuário</h4>
             </Typography>
@@ -316,8 +313,6 @@ const RegistUser = () => {
                                 color="primary"
                                 size="large"
                                 type='submit'
-
-
                                 startIcon={
                                     <SaveIcon />
                                 }
