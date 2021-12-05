@@ -18,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import SideBarMenuList from './SideBarMenuList';
+import { Link } from 'react-router-dom';
 
 
 const drawerWidth = 240;
@@ -146,12 +147,14 @@ const SideBarComponent = (props) => {
                 <Divider />
                 <List>
                     {SideBarMenuList.map((item, index) => (
+                        <Link style={{textDecoration:'none'}} to= {item.url}>
                         <ListItem button key={item.id}>
                             <ListItemIcon>
                                 {item.icon}
                             </ListItemIcon>
                             <ListItemText primary={item.title} />
                         </ListItem>
+                        </Link>
                     ))}
                 </List>
                 <Divider />

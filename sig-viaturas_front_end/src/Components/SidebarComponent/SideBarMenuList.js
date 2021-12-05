@@ -19,25 +19,26 @@ export const SideBarMenuList = [
     },
     {
         title: "Entrada de veículos",
-        url: "/entrada",
+        url: "/",
         icon: <CommuteIcon />,
         cName: "nav-text",
         id: 3
     },
     {
         title: "Lista de veículos",
-        url: "/lista",
+        url: "/listVehicle",
         icon: <ListIcon />,
         cName: "nav-text",
         id: 4
     },
-    {
-        title: "Lista de proprietários",
-        url: "/listaProprietario",
-        icon: <CgUserList />,
-        cName: "nav-text",
-        id: 5
-    }
+
+    // {
+    //     title: "Lista de proprietários",
+    //     url: "/listaProprietario",
+    //     icon: <CgUserList />,
+    //     cName: "nav-text",
+    //     id: 5
+    // }
 
 ]
 
