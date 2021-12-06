@@ -7,6 +7,7 @@ import ListUsersPage from './pages/adminPages/listUsers';
 import RegisterUserPage from './pages/adminPages/registerUser';
 import AdminDashboardPage from './pages/adminPages/adminDashboar';
 import UserDetailsPage from './pages/adminPages/userDetails';
+import LoginPage from './pages/login';
 
 
 const Rotas = () => {
@@ -16,9 +17,9 @@ const Rotas = () => {
             <  Routes>
                 {/* Rotas do guest................... */}
 
-                <Route exact path="/" element={<AddVeiclePage />} />
-                <Route exact path="/updateVehicle" element={<UpdateVeiclePage />} />
-                <Route exact path="/listVehicle" element={<ListVeiclePage />} />
+                <Route exact path="/user/addVeicle" element={<AddVeiclePage />} />
+                <Route exact path="/user/updateVehicle" element={<UpdateVeiclePage />} />
+                <Route exact path="/user/listVehicle" element={<ListVeiclePage />} />
 
 
                 {/* Rotas do admin..........................*/}
@@ -32,8 +33,10 @@ const Rotas = () => {
                 <Route exact path="/admin/details/:id" element={<UserDetailsPage />} />
 
 
+                {/* login route */}
+                <Route exact path="/" element={<LoginPage />} />
 
-                {/*   <Route exact path="/duc/atribuirtecnico/:id" element={<DucAtribuirTacnicoPage />} /> */}
+
             </  Routes>
         </HashRouter>
 

@@ -19,14 +19,14 @@ export const SideBarMenuList = [
     },
     {
         title: "Entrada de veículos",
-        url: "/",
+        url: "/user/addVeicle",
         icon: <CommuteIcon />,
         cName: "nav-text",
         id: 3
     },
     {
         title: "Lista de veículos",
-        url: "/listVehicle",
+        url: "/user/listVehicle",
         icon: <ListIcon />,
         cName: "nav-text",
         id: 4
