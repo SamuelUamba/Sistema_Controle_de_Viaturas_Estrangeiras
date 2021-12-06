@@ -1,4 +1,9 @@
 import React, { Component } from 'react'
+import SaveIcon from '@material-ui/icons/Save';
+import PrintIcon from '@material-ui/icons/Print';
+import UpdateIcon from '@material-ui/icons/Update';
+
+import { Link } from 'react-router-dom'
 import { Form, Row, Col, Card, Button } from 'react-bootstrap';
 import { Grid } from '@material-ui/core';
 import { useState, useEffect, useRef } from 'react';
@@ -51,6 +56,9 @@ const AddVeicle = () => {
     const [nomeproprietario, SetNomeprop] = useState("");
     const [tempoPermanencia, setTempoPermanencia] = useState("");
     const [objectivo, setObjectivo] = useState("Turismo");
+    const [email, setEmail] = useState("");
+    const [contacto, setContacto] = useState("");
+
     const [nrCarta, setNrCarta] = useState();
     const [local_emissao_carta_id, setlocal_emissao_carta_id] = useState("");
     const [nacionalidade_proprietario_id, setnacionalidade_proprietario_id] = useState("");
@@ -127,7 +135,7 @@ const AddVeicle = () => {
             body: JSON.stringify(nacionalidade)
         }).then(() => {
             console.log('nacionalidade adicionada!')
-            setNomePaisNacionalidade("")
+            
 
         })
 
@@ -145,9 +153,7 @@ const AddVeicle = () => {
             body: JSON.stringify(carta)
         }).then(() => {
             console.log('carta adicionada!')
-            setDataEmissao("")
-            setPais("")
-            setCidadeEmissao("")
+           
 
         })
 
@@ -167,12 +173,7 @@ const AddVeicle = () => {
             body: JSON.stringify(entrada)
         }).then(() => {
             console.log('entrada adicionada!')
-            setDataEntrada("")
-            setDataSaidaPrevista("")
-            setDataProrogacao("")
-            setDataFimProrogacao("")
-            setStatus("")
-
+           
         })
 
 
@@ -196,15 +197,7 @@ const AddVeicle = () => {
             body: JSON.stringify(Viatura)
         }).then(() => {
             console.log('Viatura adicionada!')
-            setNrMatricula("")
-            setMarcaviatura("")
-            setModeloviatura("")
-            setTipo("")
-            setNrMotor("")
-            setNrChassi("")
-            setCor("")
-            setNrLugares("")
-            setCustoEstimadoViatura("")
+            
         })
 
 
@@ -212,7 +205,9 @@ const AddVeicle = () => {
         const Proprietario = {
             nome: nomeproprietario,
             tempoPermanencia,
-            objectivo,
+            objectivo:objectivo,
+            email:email,
+            contacto:contacto,
             nrCarta,
             viatura_id: counter,
             local_emissao_carta_id: counter,
@@ -225,10 +220,7 @@ const AddVeicle = () => {
             body: JSON.stringify(Proprietario)
         }).then(() => {
             console.log('Proprietario adicionado!')
-            SetNomeprop("")
-            setTempoPermanencia("")
-            setObjectivo("")
-            setNrCarta("")
+            
         })
 
         // Endereco
@@ -245,10 +237,7 @@ const AddVeicle = () => {
             body: JSON.stringify(Endereco)
         }).then(() => {
             console.log('Endereco adicionado!')
-            setNomePaisEndereco("")
-            setcidadeEndereco("")
-            setBairro("")
-            setAvenida("")
+            
         })
 
         // Equipamento
@@ -267,11 +256,41 @@ const AddVeicle = () => {
             body: JSON.stringify(Equipamento)
         }).then(() => {
             console.log('Equipamento adicionado!')
+            setNomePaisNacionalidade("")
+            setDataEntrada("")
+            setDataSaidaPrevista("")
+            setDataProrogacao("")
+            setDataFimProrogacao("")
+            setStatus("")
+            setRegiao("--Select--")
+            setNomeInstancia("--Select--")
+            setDataEmissao("")
+            setPais("")
+            setCidadeEmissao("")
             setDescricao("")
             SetMarcaAuxiliar("")
             setmodeloAuxiliar("")
             setNrIdentificacao("")
             setCustoEstimadoAuxiliar("")
+            setNrMatricula("")
+            setMarcaviatura("")
+            setModeloviatura("")
+            setTipo("")
+            setNrMotor("")
+            setNrChassi("")
+            setCor("")
+            setNrLugares("")
+            setCustoEstimadoViatura("")
+            SetNomeprop("")
+            setTempoPermanencia("")
+            setObjectivo("")
+            setNrCarta("")
+            setEmail("")
+            setContacto("")
+            setNomePaisEndereco("")
+            setcidadeEndereco("")
+            setBairro("")
+            setAvenida("")
         })
 
 
@@ -281,22 +300,22 @@ const AddVeicle = () => {
 
     return (
         <div>
-            <h2>Formulário de entrada de veículos/Vehicle entry form </h2>
+            <h2>Formulário de entrada de veículos </h2>
             <div >
                 <Form onSubmit={handleSubmit}>
 
                     <Card>
 
-                        <Card.Header>Região de Entrada/Entry region</Card.Header>
+                        <Card.Header>Região de Entrada</Card.Header>
                         <Card.Body>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="regiao">
-                                    <Form.Label>Região/Region</Form.Label>
+                                    <Form.Label>Região</Form.Label>
                                     <Form.Select
                                         required
                                         onChange={(e) => setRegiao_id(e.target.value)}
                                     >
-                                        <option desabled selected>--Select--</option>
+                                        <option desabled selected>--Selecione--</option>
                                         {
                                             regioes.map(regiao => {
                                                 return (
@@ -313,12 +332,12 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="estancia">
-                                    <Form.Label>Estância/Instance</Form.Label>
+                                    <Form.Label>Estância</Form.Label>
                                     <Form.Select
                                         required
                                         onChange={(e) => setInstancia_id(e.target.value)}
                                     >
-                                        <option desabled selected>--Select--</option>
+                                        <option desabled selected>--Selecione--</option>
                                         {
                                             fronteiras.map(front => {
                                                 return (
@@ -333,7 +352,7 @@ const AddVeicle = () => {
                             </Row>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="data_entrada">
-                                    <Form.Label>Data de Entrada/Entery date</Form.Label>
+                                    <Form.Label>Data de Entrada</Form.Label>
                                     <input type="date"
                                         className="form-control"
                                         required
@@ -343,7 +362,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="data_Saida">
-                                    <Form.Label>Data de Saida/ Exit Date</Form.Label>
+                                    <Form.Label>Data de Saida</Form.Label>
                                     <input type="date"
                                         className="form-control"
                                         required
@@ -352,7 +371,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="data_Prorogacao">
-                                    <Form.Label>Prorogacao/ Extension </Form.Label>
+                                    <Form.Label>Prorogação </Form.Label>
                                     <input type="date"
                                         className="form-control"
                                         required
@@ -361,7 +380,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="data_Fim Prorogacao">
-                                    <Form.Label> Fim Prorogacao/ Extension End </Form.Label>
+                                    <Form.Label> Fim Prorogação </Form.Label>
                                     <input type="date"
                                         className="form-control"
                                         required
@@ -377,7 +396,7 @@ const AddVeicle = () => {
                                         value={status}
                                         onChange={(e) => setStatus(e.target.value)}
                                     >
-                                        <option >--Select--</option>
+                                        <option >--Selecione--</option>
                                         <option >On</option>
                                         <option >OFF</option>
                                     </Form.Select>
@@ -387,11 +406,11 @@ const AddVeicle = () => {
                     </Card>
                     <br></br>
                     <Card>
-                        <Card.Header>Detalhes do proprietário/Pessoa Autorizada(Datails of owner/autorised Person)</Card.Header>
+                        <Card.Header>Detalhes do proprietário/Pessoa Autorizada</Card.Header>
                         <Card.Body>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="nome">
-                                    <Form.Label>Nome completo/full name</Form.Label>
+                                    <Form.Label>Nome completo</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -400,7 +419,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="Nacionalidade">
-                                    <Form.Label>Nacionalidade/Nationality</Form.Label>
+                                    <Form.Label>Nacionalidade</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -412,7 +431,7 @@ const AddVeicle = () => {
                             </Row>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="Carta">
-                                    <Form.Label>Nº da carta/driving license number</Form.Label>
+                                    <Form.Label>Nº da carta de Condução</Form.Label>
                                     <input className="form-control"
                                         type="number"
                                         min="1"
@@ -424,7 +443,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="local_Emissao">
-                                    <Form.Label>Local de Emissão/place of issue</Form.Label>
+                                    <Form.Label>Local de Emissão</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -434,7 +453,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="data_emissao">
-                                    <Form.Label>Data de emissão/issue date</Form.Label>
+                                    <Form.Label>Data de emissão</Form.Label>
                                     <input type="date"
                                         className="form-control"
                                         required
@@ -443,7 +462,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="PaisEmissao">
-                                    <Form.Label>Pais de emissão/issue country</Form.Label>
+                                    <Form.Label>Pais de emissão</Form.Label>
                                     <input type="text"
                                         className="form-control"
                                         required
@@ -456,7 +475,7 @@ const AddVeicle = () => {
                             <Row className="mb-3">
 
                                 <Form.Group as={Col} controlId="endereco">
-                                    <Form.Label>Endereço em Moçamique/Adress in Mozambique</Form.Label>
+                                    <Form.Label>Cidade em Moçamique</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -489,31 +508,33 @@ const AddVeicle = () => {
                             <Row className="  mb-3" >
 
                                 <Form.Group as={Col} controlId="duracao">
-                                    <Form.Label>Duração da visita(Meses)/duration of visit(months)</Form.Label>
+                                    <Form.Label>Duração da visita(Meses)</Form.Label>
                                     <input className="form-control"
                                         type="number"
                                         required
                                         min="1"
+                                        value={tempoPermanencia}
                                         onChange={(e) => setTempoPermanencia(e.target.value)}
 
                                     />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="Email">
-                                    <Form.Label>Endereço Eletrónico/E-mail</Form.Label>
+                                    <Form.Label>Endereço Eletrónico</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
-                                    //onChange={(e) => SetDP_Email(e.target.value)}
+                                        value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="cell">
-                                    <Form.Label>Contacto Telefonico/Telephone contact</Form.Label>
+                                    <Form.Label>Contacto Telefonico</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
-
-                                    // onChange={(e) => SetDP_Cell(e.target.value)}
+                                        value={contacto}
+                                     onChange={(e) => setContacto(e.target.value)}
 
                                     />
                                 </Form.Group>
@@ -521,13 +542,13 @@ const AddVeicle = () => {
 
                             <Row className="mb-3 " >
                                 <Form.Group as={Col} controlId="objectivo" >
-                                    <Form.Label>Objectivo da visita/Purpose of visit</Form.Label>
+                                    <Form.Label>Objectivo da visita</Form.Label>
 
                                     <Grid container style={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
 
-                                        {["Turismo/Tourism", "Negocio/Business", "Transporte Internacional  de passageiros ou carga/International Transport of passengers or goods",
-                                            "Ambulancia ou carro Funerário /Ambulance or Funerary vehicle", "Viatura para projecto de Estado/ vehicle for use in state works projects",
-                                            "Contrato de trabalho/Employment on contract", "outros fins"].map((item) => (
+                                        {["Turismo", "Negocio", "Transporte Internacional  de passageiros ou carga",
+                                            "Ambulancia ou carro Funerário", "Viatura para projecto de Estado",
+                                            "Contrato de trabalho", "outros fins"].map((item) => (
                                                 <Grid item lg={4} xs={4} md={4} >
                                                     <Form.Check
                                                         label={item}
@@ -550,11 +571,11 @@ const AddVeicle = () => {
                     </Card>
                     <br></br>
                     <Card>
-                        <Card.Header>Caracteristicas da viatura/Datails of Vehicle</Card.Header>
+                        <Card.Header>Caracteristicas da viatura</Card.Header>
                         <Card.Body>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="marca">
-                                    <Form.Label>Marca/Make</Form.Label>
+                                    <Form.Label>Marca</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -563,7 +584,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="modelo">
-                                    <Form.Label>Modelo/Model</Form.Label>
+                                    <Form.Label>Modelo</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -572,7 +593,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="tipo">
-                                    <Form.Label>Tipo/typel</Form.Label>
+                                    <Form.Label>Tipo</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -583,7 +604,7 @@ const AddVeicle = () => {
                             </Row>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="Motor">
-                                    <Form.Label>Nº do Motor/Engine Nº</Form.Label>
+                                    <Form.Label>Nº do Motor</Form.Label>
                                     <input className="form-control"
                                         type="number"
                                         min="1"
@@ -595,7 +616,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="quadro">
-                                    <Form.Label>Nº do quadro/ Chassi Nº </Form.Label>
+                                    <Form.Label>Nº do quadro</Form.Label>
                                     <input className="form-control"
                                         type="number"
                                         required
@@ -605,7 +626,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="valor">
-                                    <Form.Label>Valor em Mt/ Value in Mt</Form.Label>
+                                    <Form.Label>Valor em Mt</Form.Label>
                                     <input className="form-control"
                                         type="number"
                                         min="0"
@@ -619,7 +640,7 @@ const AddVeicle = () => {
 
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="cor">
-                                    <Form.Label>Cor/Color</Form.Label>
+                                    <Form.Label>Cor</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -629,7 +650,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="lugares">
-                                    <Form.Label>Nº do Lugares/Seating</Form.Label>
+                                    <Form.Label>Nº do Lugares</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         min="1"
@@ -640,7 +661,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="matricula">
-                                    <Form.Label>Nº de Matricula/Registration Nº</Form.Label>
+                                    <Form.Label>Nº de Matricula</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -655,11 +676,11 @@ const AddVeicle = () => {
                     <br></br>
                     <Card>
                         <Card.Header>Equipamento auxiliar,por exemplo reboque
-                            ,barco/Auxiliary equipament(ex. trailer, boat,..)</Card.Header>
+                            ,barco/</Card.Header>
                         <Card.Body>
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="descricao">
-                                    <Form.Label>Decrição/Description</Form.Label>
+                                    <Form.Label>Decrição</Form.Label>
                                     <input className="form-control"
                                         type="text"
                                         required
@@ -669,7 +690,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="marca">
-                                    <Form.Label>Marca e Numero/ Make and Nº</Form.Label>
+                                    <Form.Label>Marca e Numero</Form.Label>
                                     <input className="form-control"
 
                                         type="text"
@@ -680,7 +701,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="modelo">
-                                    <Form.Label>Modelo/Model</Form.Label>
+                                    <Form.Label>Modelo</Form.Label>
                                     <input className="form-control" type="text"
                                         required
                                         value={modeloAuxiliar}
@@ -688,7 +709,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="id">
-                                    <Form.Label>Nº de id/id Nº </Form.Label>
+                                    <Form.Label>Nº de id</Form.Label>
                                     <input className="form-control" type="number"
                                         min="1"
                                         required
@@ -697,7 +718,7 @@ const AddVeicle = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="valor">
-                                    <Form.Label>Valor em Mt/Value in Mt</Form.Label>
+                                    <Form.Label>Valor em Mt</Form.Label>
                                     <input className="form-control" type="text"
                                         min="0"
                                         required
@@ -711,8 +732,7 @@ const AddVeicle = () => {
                         </Card.Body>
                     </Card>
                     <br></br>
-                    <button className="btn btn-primary " >Salvar</button>{'  '}
-                    <button className="btn btn-primary " >Imprimir</button>
+                    <button className="btn btn-primary " ><SaveIcon /> Salvar / Save</button>{'  '}
                 </Form>
 
 

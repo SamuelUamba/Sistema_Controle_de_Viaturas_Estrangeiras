@@ -1,5 +1,4 @@
 import React from 'react'
-import SearchIcon from '@material-ui/icons/Search';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import PrintIcon from '@material-ui/icons/Print';
 import UpdateIcon from '@material-ui/icons/Update';
