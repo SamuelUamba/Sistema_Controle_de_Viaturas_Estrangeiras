@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+import emailjs from 'emailjs-com';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from '@material-ui/core';
@@ -11,6 +13,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import cssGeral from '../../css/cssGeral.css'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import uuid from 'react-uuid';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -34,19 +37,16 @@ function Alert(props) {
 }
 
 
-
-
-
-
-
 const RegistUser = () => {
+
+    const form = useRef();
 
     const classes = useStyles();
     const [nomeUser, setNomeUser] = useState("");
     const [apelidoUser, setApelidoUser] = useState("");
     const [dataNascimento, setDataNascimento] = useState("");
-    const [senhaUser, setSenhaUser] = useState("");
-    const [senhaUserConfrim, setSenhaUserConfrim] = useState("");
+    const [senhaUser, setSenhaUser] = useState(uuid().substring(1, 7));
+    const [senhaUserConfrim, setSenhaUserConfrim] = useState(uuid().substring(1, 7));
     const [contacto, setContacto] = useState("");
     const [tipoUser, setTipoUser] = useState("Normal");
     const [emailUser, setEmailUser] = useState("");
@@ -62,6 +62,7 @@ const RegistUser = () => {
 
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [idGerado, setidGerado] = useState(uuid().substring(1, 7));
 
 
     const handleClose = (event, reason) => {
@@ -76,6 +77,7 @@ const RegistUser = () => {
         }
         setOpen2(false);
     };
+
 
 
 
@@ -101,7 +103,6 @@ const RegistUser = () => {
 
         e.preventDefault();
 
-        console.log("submit")
 
         if (apelidoUser == "" || apelidoUser == null) {
             setApelidoUserInvalida({ status: true, message: "Nome de user é inválido" });
@@ -147,7 +148,7 @@ const RegistUser = () => {
         }
 
         if (senhaUserConfrim != senhaUser) {
-            setOpen(true);
+            // setOpen(true);
         }
 
 
@@ -161,9 +162,18 @@ const RegistUser = () => {
             contacto != "" & tipoUser != "" & apelidoUser != "";
 
 
-        if (condicao == false & condicao2 == true & senhaUserConfrim == senhaUser) {
+        if (condicao == false & condicao2 == true) {
 
-            console.log("condicoes de salvar satifeitas")
+            console.log('condicoes satisfeitas')
+
+
+            emailjs.sendForm('service_5qb91qf', 'template_idbl20k', form.current, 'user_EZVBmVQDPKgN6R899VI8W')
+                .then((result) => {
+                    console.log("result.text :", result.text);
+                }, (error) => {
+                    console.log("error: ", error.text);
+                });
+
 
             const user = {
                 nome: nomeUser,
@@ -190,6 +200,8 @@ const RegistUser = () => {
                 setTipoUser("Normal");
                 setEmailUser("")
             })
+
+            console.log('user', user)
         }
 
     }
@@ -201,7 +213,7 @@ const RegistUser = () => {
                 <h4 style={{ marginTop: '30px' }}>Formulário de Registo de usuário</h4>
             </Typography>
 
-            <form className="" autoComplete="off" onSubmit={validateForm} >
+            <form ref={form} className="" autoComplete="off" onSubmit={validateForm} >
 
                 <Card style={{ margin: "5px 5px 5px 5px" }}>
                     <Card.Header as="h6">Dados do usuário</Card.Header>
@@ -220,6 +232,7 @@ const RegistUser = () => {
                                     className="form-control"
                                     type="text"
                                     required
+                                    name='nome'
                                     value={nomeUser}
                                     onChange={(e) => { setNomeUser(e.target.value) }}
                                 />
@@ -230,6 +243,7 @@ const RegistUser = () => {
                                     className="form-control"
                                     type="text"
                                     required
+                                    name='apelido'
                                     value={apelidoUser}
                                     onChange={(e) => { setApelidoUser(e.target.value) }}
 
@@ -255,6 +269,8 @@ const RegistUser = () => {
                                 <input
                                     className="form-control"
                                     type="email"
+                                    name='email'
+
                                     required
                                     value={emailUser}
                                     onChange={(e) => { setEmailUser(e.target.value) }}
@@ -285,24 +301,37 @@ const RegistUser = () => {
 
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGroupPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
+                                <Form.Label></Form.Label>
+                                <input
+                                    className="form-control"
                                     type="password"
-                                    placeholder="Password"
                                     value={senhaUser}
+                                    name='senhaUser'
+                                    hidden
 
-                                    onChange={(e) => { setSenhaUser(e.target.value) }}
                                 />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGroupPassword">
-                                <Form.Label>Confirm Password</Form.Label>
-                                <Form.Control
+                                <Form.Label></Form.Label>
+                                <input
+                                    className="form-control"
                                     type="password"
-                                    placeholder="Password "
-                                    value={senhaUserConfrim}
+                                    value={idGerado}
+                                    hidden
 
-                                    onChange={(e) => { setSenhaUserConfrim(e.target.value) }}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="local_Emissao">
+                                <Form.Label> </Form.Label>
+                                <input
+                                    className="form-control"
+                                    type="number"
+                                    name='idGerado'
+                                    value={idGerado}
+                                    hidden
+
                                 />
                             </Form.Group>
                         </Row>
