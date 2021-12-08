@@ -47,18 +47,18 @@ function Alert(props) {
 const Login = () => {
     const classes = useStyles();
     const navigate = useNavigate();
-
-
     const [userTyped, setUserTyped] = useState("");
     const [passwordTyped, setpasswordTyped] = useState("");
     const [open, setOpen] = useState(false);
 
-
     const { dbData: usersList, error, loading } = useFetch('http://127.0.0.1:8000/api/getusuario');
+
+    console.log('userlist', usersList)
+
 
     const validarUser = () => {
 
-        for (let i = 0; usersList?.length; i++) {
+        for (let i = 0; i < usersList?.length; i++) {
 
             if (usersList[i]?.nome == userTyped
                 && usersList[i]?.password == passwordTyped
@@ -69,9 +69,6 @@ const Login = () => {
                 && usersList[i]?.password == passwordTyped
                 && usersList[i]?.tipo == 'Administrador') {
                 navigate('/admin/dashboard');
-            }
-            else {
-                setOpen(true)
             }
         }
     };
@@ -97,9 +94,6 @@ const Login = () => {
     }
 
     return (
-
-
-
 
         <Container component="main" maxWidth="xs" style={{ marginTop: '50px' }}>
             <CssBaseline />
@@ -146,7 +140,6 @@ const Login = () => {
                             />
 
                             <Button
-
                                 fullWidth
                                 variant="contained"
                                 color="primary"
