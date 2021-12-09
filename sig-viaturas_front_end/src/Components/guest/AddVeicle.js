@@ -2,15 +2,19 @@ import React, { Component } from 'react'
 import SaveIcon from '@material-ui/icons/Save';
 import PrintIcon from '@material-ui/icons/Print';
 import UpdateIcon from '@material-ui/icons/Update';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import Button from "@material-ui/core/Button";
 import { Link } from 'react-router-dom'
-import { Form, Row, Col, Card, Button } from 'react-bootstrap';
+import { Form, Row, Col, Card } from 'react-bootstrap';
 import { Grid } from '@material-ui/core';
 import { useState, useEffect, useRef } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const AddVeicle = () => {
 
+    const [loadingStatus, setLoadingStatus] = useState(true);
 
     //Região 
     const [nomeRegiao, setRegiao] = useState("");
@@ -54,7 +58,7 @@ const AddVeicle = () => {
 
     //Proprietario
     const [nomeproprietario, SetNomeprop] = useState("");
-    const [tempoPermanencia, setTempoPermanencia] = useState("");
+    const [tempoPermanencia, setTempoPermanencia] = useState("30");
     const [objectivo, setObjectivo] = useState("Turismo");
     const [email, setEmail] = useState("");
     const [contacto, setContacto] = useState("");
@@ -71,6 +75,7 @@ const AddVeicle = () => {
     const [Bairro, setBairro] = useState("");
     const [Avenida, setAvenida] = useState("");
 
+
     //Equipameto Auxiliar
     const [descricao, setDescricao] = useState("");
     const [marcaAuxiliar, SetMarcaAuxiliar] = useState("");
@@ -78,7 +83,24 @@ const AddVeicle = () => {
     const [nrIdentificacao, setNrIdentificacao] = useState("");
     const [custoEstimadoAuxiliar, setCustoEstimadoAuxiliar] = useState("");
 
+    const [open, setOpen] = useState(false);
 
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+    
+    const [age_now, setage_now] = useState("");
+
+    const calculate_age = (dateOfConstrution, today) => {
+        //   var today = new Date();
+        var dateOfConst = new Date(dateOfConstrution);
+        var age_now = today.getFullYear() - dateOfConst.getFullYear();
+        var m = today.getMonth() - dateOfConst.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dateOfConst.getDate())) {
+            age_now--;
+        }
+        setage_now(age_now)
+    }
     const [counter, setCounter] = useState(1)
     useEffect(() => {
         fetch('http://127.0.0.1:8000/api/counter', {
@@ -90,7 +112,7 @@ const AddVeicle = () => {
             .then(resp => setCounter(resp))
     }, [])
 
-    console.log(counter + 1)
+
 
 
 
@@ -118,11 +140,17 @@ const AddVeicle = () => {
             .then(resp => listafronteiras(resp))
     }, [regiao_id])
 
-
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setCounter(counter + 1)
+        setLoadingStatus(false)
 
         //Nacionalidade
         const nacionalidade = {
@@ -204,7 +232,7 @@ const AddVeicle = () => {
         // Proprietario
         const Proprietario = {
             nome: nomeproprietario,
-            tempoPermanencia: dataSaidaPrevista.getDate()-dataEntrada.getDate(),
+            tempoPermanencia: tempoPermanencia,
             objectivo: objectivo,
             email: email,
             contacto: contacto,
@@ -223,7 +251,7 @@ const AddVeicle = () => {
 
         })
 
-        console.log('data',dataSaidaPrevista-dataEntrada)
+      
 
         // Endereco
         const Endereco = {
@@ -292,12 +320,14 @@ const AddVeicle = () => {
             setcidadeEndereco("")
             setBairro("")
             setAvenida("")
+            setOpen(true);
+            setLoadingStatus(true)
         })
 
 
     }
 
-    console.log(objectivo);
+ 
 
     return (
         <div>
@@ -358,7 +388,10 @@ const AddVeicle = () => {
                                         className="form-control"
                                         required
                                         value={dataEntrada}
-                                        onChange={(e) => setDataEntrada(e.target.value)}
+                                        onChange={(e) => {
+                                            setDataEntrada(e.target.value)
+                                        console.log(e.target.value)
+                                        }}
                                     />
                                 </Form.Group>
 
@@ -733,7 +766,32 @@ const AddVeicle = () => {
                         </Card.Body>
                     </Card>
                     <br></br>
-                    <button className="btn btn-primary " ><SaveIcon /> Salvar</button>{'  '}
+                    <div className='div-flexEnd-style'>
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            type='submit'
+                            disabled={!loadingStatus}
+                            startIcon={
+                                loadingStatus
+                                    ? (<SaveIcon />)
+                                    : (<Spinner animation="border" />)
+                            }
+                        >
+                            Salvar
+                        </Button>
+                    </div>
+                    <div>
+                        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                            <Alert onClose={handleClose} >
+                                Dados guardados com sucesso
+                            </Alert>
+                        </Snackbar>
+
+                    </div>
+
                 </Form>
 
 
