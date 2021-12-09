@@ -14,6 +14,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import cssGeral from '../../css/cssGeral.css'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+
 import uuid from 'react-uuid';
 
 const useStyles = makeStyles((theme) => ({
@@ -377,8 +378,6 @@ const RegistUser = () => {
                                 </Alert>
                             </Snackbar>
                         </div>
-
-
 
                     </Card.Body>
                 </Card>
