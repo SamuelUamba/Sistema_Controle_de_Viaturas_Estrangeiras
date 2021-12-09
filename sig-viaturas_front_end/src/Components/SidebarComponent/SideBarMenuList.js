@@ -12,21 +12,21 @@ import ListIcon from '@material-ui/icons/List';
 export const SideBarMenuList = [
     {
         title: "Dashboard",
-        url: "/guest/dashboard",
+        url: "/user/dashboard",
         icon: <DashboardIcon />,
         cName: "nav-text",
         id: 1
     },
     {
         title: "Entrada de veículos",
-        url: "/guest/addvehicle",
+        url: "/user/addVeicle",
         icon: <CommuteIcon />,
         cName: "nav-text",
         id: 3
     },
     {
         title: "Lista de veículos",
-        url: "/guest/listvehicle",
+        url: "/user/listVehicle",
         icon: <ListIcon />,
         cName: "nav-text",
         id: 4

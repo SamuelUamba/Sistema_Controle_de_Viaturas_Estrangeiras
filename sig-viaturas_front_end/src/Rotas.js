@@ -6,11 +6,9 @@ import UpdateVeiclePage from './pages/guestPages/updateVeicles';
 import ListUsersPage from './pages/adminPages/listUsers';
 import RegisterUserPage from './pages/adminPages/registerUser';
 import AdminDashboardPage from './pages/adminPages/adminDashboar';
-import UserDetailsPage from './pages/adminPages/userDetails';
 import GuestDashboardPage from './pages/guestPages/guestDashboar';
-import VehicleDetailsPage from './pages/guestPages/vehicleDetails';
-
-
+import UserDetailsPage from './pages/adminPages/userDetails';
+import LoginPage from './pages/login';
 
 
 const Rotas = () => {
@@ -19,11 +17,11 @@ const Rotas = () => {
         <HashRouter>
             <  Routes>
                 {/* Rotas do guest................... */}
-                
-                <Route exact path="/guest/dashboard" element={<GuestDashboardPage />} />
-                <Route exact path="/guest/addvehicle" element={<AddVeiclePage />} />
-                <Route exact path="/guest/listvehicle" element={<ListVeiclePage />} />  
-                <Route exact path="/guest/details/:id" element={<VehicleDetailsPage />} />
+                <Route exact path="/user/dashboard" element={<GuestDashboardPage />} />
+                <Route exact path="/user/addVeicle" element={<AddVeiclePage />} />
+                <Route exact path="/user/updateVehicle" element={<UpdateVeiclePage />} />
+                <Route exact path="/user/listVehicle" element={<ListVeiclePage />} />
+
 
                 {/* Rotas do admin..........................*/}
 
@@ -36,8 +34,10 @@ const Rotas = () => {
                 <Route exact path="/admin/details/:id" element={<UserDetailsPage />} />
 
 
+                {/* login route */}
+                <Route exact path="/" element={<LoginPage />} />
 
-                {/*   <Route exact path="/duc/atribuirtecnico/:id" element={<DucAtribuirTacnicoPage />} /> */}
+
             </  Routes>
         </HashRouter>
 
