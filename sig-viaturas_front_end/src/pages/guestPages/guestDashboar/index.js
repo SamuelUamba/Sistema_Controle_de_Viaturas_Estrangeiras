@@ -10,6 +10,7 @@ const GuestDashboardPage = () => {
             <GuestSidebar
                 componente={<GuestDashboard />}
             />
+           
         </div>
     )
 }

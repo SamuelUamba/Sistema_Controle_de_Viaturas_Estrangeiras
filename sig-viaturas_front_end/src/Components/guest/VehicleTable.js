@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const VehicleTable = () => {
+const VehicleTable = (props) => {
 
     const classes = useStyles();
 

@@ -9,21 +9,21 @@ import ListIcon from '@material-ui/icons/List';
 export const GuestMenuList = [
     {
         title: "Dashboard",
-        url: "/guest/dashboard",
+        url: "/user/dashboard",
         icon: <DashboardIcon />,
         cName: "nav-text",
         id: 1
     },
     {
         title: "Adicionar Entrada",
-        url: "/guest/addvehicle",
+        url: "/user/addVeicle",
         icon: <CommuteIcon />,
         cName: "nav-text",
         id: 3
     },
     {
         title: "Lista de Vehiculos",
-        url: "/guest/listvehicle",
+        url: "/user/listvehicle",
         icon: <ListIcon />,
         cName: "nav-text",
         id: 4

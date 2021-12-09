@@ -6,7 +6,9 @@ const ListVeiclePage = () => {
     return (
         <div>
             <SideBarComponent
-                componente={<VehicleTable/>}
+                componente={<VehicleTable
+                    tamanho={5}
+                />}
             />
         </div>
     )
