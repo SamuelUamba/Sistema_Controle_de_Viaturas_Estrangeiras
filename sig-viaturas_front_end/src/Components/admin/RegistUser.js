@@ -4,10 +4,11 @@ import emailjs from 'emailjs-com';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
 import Button from "@material-ui/core/Button";
 import { Redirect } from 'react-router';
 import Spinner from 'react-bootstrap/Spinner';
+import SaveIcon from '@material-ui/icons/Save';
+
 import { Form, Row, Col, Card, InputGroup, Container, FormControl, Label } from 'react-bootstrap';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import cssGeral from '../../css/cssGeral.css'
@@ -50,6 +51,8 @@ const RegistUser = () => {
     const [contacto, setContacto] = useState("");
     const [tipoUser, setTipoUser] = useState("Normal");
     const [emailUser, setEmailUser] = useState("");
+    const [loadingStatus, setLoadingStatus] = useState(true);
+
 
     // validação de form ststes
     const [nomeUserInvalida, setNomeUserInvalida] = useState({ status: false, message: "" });
@@ -62,7 +65,7 @@ const RegistUser = () => {
 
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
-    const [idGerado, setidGerado] = useState(uuid().substring(1, 7));
+    const [idGerado, setidGerado] = useState(uuid().substring(1, 6));
 
 
     const handleClose = (event, reason) => {
@@ -103,6 +106,7 @@ const RegistUser = () => {
 
         e.preventDefault();
 
+        setLoadingStatus(false)
 
         if (apelidoUser == "" || apelidoUser == null) {
             setApelidoUserInvalida({ status: true, message: "Nome de user é inválido" });
@@ -182,7 +186,8 @@ const RegistUser = () => {
                 contacto: contacto,
                 email: emailUser,
                 password: senhaUser,
-                tipo: tipoUser
+                tipo: tipoUser,
+                status: 'Activo'
             }
 
             fetch('http://localhost:8000/api/saveusuario', {
@@ -199,6 +204,9 @@ const RegistUser = () => {
                 setContacto("");
                 setTipoUser("Normal");
                 setEmailUser("")
+                setOpen(true);
+                setLoadingStatus(true)
+
             })
 
             console.log('user', user)
@@ -342,8 +350,11 @@ const RegistUser = () => {
                                 color="primary"
                                 size="large"
                                 type='submit'
+                                disabled={!loadingStatus}
                                 startIcon={
-                                    <SaveIcon />
+                                    loadingStatus
+                                        ? (<SaveIcon />)
+                                        : (<Spinner animation="border" />)
                                 }
                             >
                                 Salvar
@@ -352,8 +363,8 @@ const RegistUser = () => {
 
                         <div>
                             <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-                                <Alert onClose={handleClose} severity='error'>
-                                    Password e confirm password deve ser igual
+                                <Alert onClose={handleClose} >
+                                    Dados guardados com sucesso
                                 </Alert>
                             </Snackbar>
 
