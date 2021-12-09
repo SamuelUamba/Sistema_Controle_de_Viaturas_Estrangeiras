@@ -1,16 +1,28 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
+import EditIcon from '@material-ui/icons/Edit';
 import PrintIcon from '@material-ui/icons/Print';
 import UpdateIcon from '@material-ui/icons/Update';
 
 import { Link } from 'react-router-dom'
 import { Form, Row, Col, Card, Button } from 'react-bootstrap';
 import { Grid } from '@material-ui/core';
-import { useState, useEffect, useRef } from 'react';
 
 
-const AddVeicle = () => {
 
+const useStyles = makeStyles((theme) => ({
+    button: {
+        margin: theme.spacing(1),
+    },
+}));
+
+
+const VehicleDetails = (props) => {
+    const classes = useStyles();
+    const [readOnlyState, setreadOnlyState] = useState(true);
 
     //Região 
     const [nomeRegiao, setRegiao] = useState("");
@@ -77,231 +89,16 @@ const AddVeicle = () => {
     const [modeloAuxiliar, setmodeloAuxiliar] = useState("");
     const [nrIdentificacao, setNrIdentificacao] = useState("");
     const [custoEstimadoAuxiliar, setCustoEstimadoAuxiliar] = useState("");
-
-
-    const [counter, setCounter] = useState(1)
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/counter', {
-            method: 'Get',
-            headers: {
-                "Content-type": "application/json",
-            }
-        }).then(resp => resp.json())
-            .then(resp => setCounter(resp))
-    }, [])
-
-    console.log(counter + 1)
-
-
-
-    //  COMBOBOX REGIOES
+  
     const [regioes, listaregioes] = useState([]);
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/getregiao', {
-            method: 'Get',
-            headers: {
-                "Content-type": "application/json",
-            }
-        }).then(resp => resp.json())
-            .then(resp => listaregioes(resp))
-    }, [])
-
-    //  COMBOBOX FRONTEIRAS
     const [fronteiras, listafronteiras] = useState([]);
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/getinstancia/regiao/' + regiao_id, {
-            method: 'Get',
-            headers: {
-                "Content-type": "application/json",
-            }
-        }).then(resp => resp.json())
-            .then(resp => listafronteiras(resp))
-    }, [regiao_id])
 
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setCounter(counter + 1)
-
-        //Nacionalidade
-        const nacionalidade = {
-            nomePais: nomePaisNacionalidade,
-            proprietario_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/savenacionalidade', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(nacionalidade)
-        }).then(() => {
-            console.log('nacionalidade adicionada!')
-            
-
-        })
-
-
-        //Local de Emissao da Carta de Conducao
-        const carta = {
-            dataEmissao,
-            pais: paisEmissao,
-            cidade: cidadeEmissao,
-            proprietario_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/savelocalemissaocarta', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(carta)
-        }).then(() => {
-            console.log('carta adicionada!')
-           
-
-        })
-
-        // Controle de Entrada
-        const entrada = {
-            dataEntrada,
-            dataSaidaPrevista,
-            dataProrogacao:dataEntrada,
-            dataFimProrogacao:dataEntrada,
-            status,
-            controleEntrada_id: counter
-
-        };
-        fetch('http://127.0.0.1:8000/api/savecontroleentrada', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(entrada)
-        }).then(() => {
-            console.log('entrada adicionada!')
-           
-        })
-
-
-
-        // Viatura
-        const Viatura = {
-            nrMatricula,
-            marca: marcaViatura,
-            modelo: modeloviatura,
-            tipo,
-            nrMotor,
-            nrChassi,
-            cor,
-            nrLugares,
-            custoEstimadoViatura,
-            controleEntrada_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/saveviatura2', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Viatura)
-        }).then(() => {
-            console.log('Viatura adicionada!')
-            
-        })
-
-
-        // Proprietario
-        const Proprietario = {
-            nome: nomeproprietario,
-            tempoPermanencia,
-            objectivo:objectivo,
-            email:email,
-            contacto:contacto,
-            nrCarta,
-            viatura_id: counter,
-            local_emissao_carta_id: counter,
-            nacionalidade_proprietario_id: counter,
-            regiao_id: regiao_id
-        };
-        fetch('http://127.0.0.1:8000/api/saveproprietario2', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Proprietario)
-        }).then(() => {
-            console.log('Proprietario adicionado!')
-            
-        })
-
-        // Endereco
-        const Endereco = {
-            pais: nomepaisEndereco,
-            cidade: cidadeEndereco,
-            Bairro,
-            Avenida,
-            proprietario_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/saveendereco2', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Endereco)
-        }).then(() => {
-            console.log('Endereco adicionado!')
-            
-        })
-
-        // Equipamento
-        const Equipamento = {
-            descricao,
-            marca: marcaAuxiliar,
-            modelo: modeloAuxiliar,
-            nrIdentificacao,
-            custoEstimadoViatura: custoEstimadoAuxiliar,
-            viatura_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/saveequipamentoauxiliar', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Equipamento)
-        }).then(() => {
-            console.log('Equipamento adicionado!')
-            setNomePaisNacionalidade("")
-            setDataEntrada("")
-            setDataSaidaPrevista("")
-            setDataProrogacao("")
-            setDataFimProrogacao("")
-            setStatus("")
-            setRegiao("--Select--")
-            setNomeInstancia("--Select--")
-            setDataEmissao("")
-            setPais("")
-            setCidadeEmissao("")
-            setDescricao("")
-            SetMarcaAuxiliar("")
-            setmodeloAuxiliar("")
-            setNrIdentificacao("")
-            setCustoEstimadoAuxiliar("")
-            setNrMatricula("")
-            setMarcaviatura("")
-            setModeloviatura("")
-            setTipo("")
-            setNrMotor("")
-            setNrChassi("")
-            setCor("")
-            setNrLugares("")
-            setCustoEstimadoViatura("")
-            SetNomeprop("")
-            setTempoPermanencia("")
-            setObjectivo("")
-            setNrCarta("")
-            setEmail("")
-            setContacto("")
-            setNomePaisEndereco("")
-            setcidadeEndereco("")
-            setBairro("")
-            setAvenida("")
-        })
-
-
-    }
-
-    console.log(objectivo);
 
     return (
         <div>
             <h2>Formulário de entrada de veículos </h2>
             <div >
-                <Form onSubmit={handleSubmit}>
+                <Form >
 
                     <Card>
 
@@ -361,7 +158,7 @@ const AddVeicle = () => {
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="data_Saida">
-                                    <Form.Label>Data Prevista para Saida</Form.Label>
+                                    <Form.Label>Data de Saida</Form.Label>
                                     <input type="date"
                                         className="form-control"
                                         //required
@@ -369,7 +166,7 @@ const AddVeicle = () => {
                                         onChange={(e) => setDataSaidaPrevista(e.target.value)}
                                     />
                                 </Form.Group>
-                                {/* <Form.Group as={Col} controlId="data_Prorogacao">
+                                <Form.Group as={Col} controlId="data_Prorogacao">
                                     <Form.Label>Prorogação </Form.Label>
                                     <input type="date"
                                         className="form-control"
@@ -386,7 +183,7 @@ const AddVeicle = () => {
                                         value={dataFimProrogacao}
                                         onChange={(e) => setDataFimProrogacao(e.target.value)}
                                     />
-                                </Form.Group> */}
+                                </Form.Group>
 
                                 <Form.Group as={Col} controlId="Status">
                                     <Form.Label>Status</Form.Label>
@@ -731,13 +528,143 @@ const AddVeicle = () => {
                         </Card.Body>
                     </Card>
                     <br></br>
-                    <button className="btn btn-primary " ><SaveIcon /> Salvar</button>{'  '}
+                    <button className="btn btn-secondary " ><EditIcon /> Actualizar</button>{'  '}
                 </Form>
-
-
             </div>
         </div >
     )
-}
+   
+        // <div>
+        //     <div className='div-detalhes-user'>
+        //         <div>
+        //             <AccountCircleIcon
+        //                 color="primary"
+        //                 style={{ fontSize: 150, margin: '0px 50px' }}
+        //             />
+        //         </div>
+        //         <div>
+        //             <Row className="mt-4">
+        //                 <Col sm={4} className="">
 
-export default AddVeicle
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Nome"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         name="landNumber"
+        //                         value={props.detalhes?.nome}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+
+        //                 </Col>
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Apelido"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.apelido}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+        //                 </Col>
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Data Nascimento"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.dataNascimento}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+        //                     />
+        //                 </Col>
+
+        //             </Row>
+        //             <Row className="mt-4">
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Email"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.email}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+        //                         }}
+        //                     />
+        //                 </Col>
+        //                 <Col sm={4} className="">
+
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Contacto"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         name="landNumber"
+        //                         value={props.detalhes?.contacto}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+
+        //                 </Col>
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Tipo de user"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.tipo}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+        //                 </Col>
+
+        //             </Row>
+        //         </div>
+        //     </div>
+        //     <div>
+        //         <Button
+        //             variant="contained"
+        //             color="secondary"
+        //             className={classes.button}
+        //             startIcon={<DeleteIcon />}
+        //         >
+        //             Delete
+        //         </Button>
+        //         <Button
+        //             variant="contained"
+        //             color="default"
+        //             className={classes.button}
+        //             startIcon={<EditIcon />}
+        //         >
+        //             Edit
+        //         </Button>
+        //     </div>
+        // </div>
+
+       // <div> Teste</div>
+    
+}
+export default VehicleDetails
