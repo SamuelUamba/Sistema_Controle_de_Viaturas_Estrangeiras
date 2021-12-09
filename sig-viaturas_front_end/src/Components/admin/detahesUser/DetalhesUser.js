@@ -12,6 +12,7 @@ import { Form, Card, InputGroup, Container, FormControl, Label } from 'react-boo
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useParams } from 'react-router-dom';
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -30,12 +31,16 @@ const DetalhesUser = (props) => {
     const { id } = useParams();
 
     const classes = useStyles();
+    const [valorID, setValorID] = useState(props.id);
     const [readOnlyState, setreadOnlyState] = useState(true);
     const [readOnlyProperty, setReadOnlyPropety] = useState(false);
     const [showSave, setShowSave] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(true);
+    const [loadingStatus2, setLoadingStatus2] = useState(true);
 
     const [nome, setNome] = useState(props.detalhes?.nome);
+    const [status, setstatus] = useState(props.detalhes?.status);
+
     const [apelido, setapelido] = useState(props.detalhes?.apelido);
     const [dataNascimento, setdataNascimento] = useState(props.detalhes?.dataNascimento);
     const [email, setemail] = useState(props.detalhes?.email);
@@ -43,6 +48,8 @@ const DetalhesUser = (props) => {
     const [tipoUser, setTipoUser] = useState(props.detalhes?.tipo);
     const [senhaUser, setsenhaUser] = useState(props.detalhes?.password);
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
+
 
 
     const handleClose = (event, reason) => {
@@ -52,6 +59,14 @@ const DetalhesUser = (props) => {
         setOpen(false);
     };
 
+
+
+    const handleClose2 = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen2(false);
+    };
 
 
     const validateForm = (e) => {
@@ -66,17 +81,19 @@ const DetalhesUser = (props) => {
             contacto: contacto,
             email: email,
             password: senhaUser,
-            tipo: tipoUser
+            tipo: tipoUser,
+            status: 'Activo',
+            id: valorID
         }
 
-        fetch(`http://localhost:8000/api/editusuario/${id}`, {
+        fetch(`http://localhost:8000/api/editusuario/${valorID}`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(user)
         }).then(() => {
-            console.log("dados actualizados com sucesso");
+            console.log("Dados actualizados com sucesso");
             setOpen(true);
             setLoadingStatus(true)
             setShowSave(false)
@@ -86,6 +103,42 @@ const DetalhesUser = (props) => {
 
     }
 
+
+    console.log('valor id', valorID)
+
+    const desabilitarUser = (e) => {
+
+        e.preventDefault();
+        setLoadingStatus(false);
+
+        const user = {
+            nome: nome,
+            apelido: apelido,
+            dataNascimento: dataNascimento,
+            contacto: contacto,
+            email: email,
+            password: senhaUser,
+            tipo: tipoUser,
+            status: 'Desbilitado',
+            id: valorID
+        }
+
+        fetch(`http://localhost:8000/api/editusuario/${valorID}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        }).then(() => {
+            console.log("User desabilitado");
+            setOpen2(true);
+            setLoadingStatus2(true)
+        })
+
+        console.log('user', user)
+
+
+    }
 
 
 
@@ -103,108 +156,160 @@ const DetalhesUser = (props) => {
                 </div>
                 {
                     !showSave &&
-                    <div>
-                        <Row className="mt-4">
-                            <Col sm={4} className="">
+                    <form onSubmit={desabilitarUser}>
 
-                                <TextField
-                                    id="standard-basic"
-                                    label="Nome"
-                                    style={{ width: "100%" }}
-                                    type="text"
-                                    name="landNumber"
-                                    value={nome}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        readOnly: true,
+                        <div>
+                            <Row className="mt-4">
+                                <Col sm={4} className="">
 
-                                    }}
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Nome"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        name="landNumber"
+                                        value={nome}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
 
-                                />
+                                        }}
 
-                            </Col>
-                            <Col sm={4} className="">
-                                <TextField
-                                    id="standard-basic"
-                                    label="Apelido"
-                                    style={{ width: "100%" }}
-                                    type="text"
-                                    value={apelido}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        readOnly: true,
+                                    />
 
-                                    }}
+                                </Col>
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Apelido"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={apelido}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
 
-                                />
-                            </Col>
-                            <Col sm={4} className="">
-                                <TextField
-                                    id="standard-basic"
-                                    label="Data Nascimento"
-                                    style={{ width: "100%" }}
-                                    type="text"
-                                    value={dataNascimento}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        readOnly: true,
+                                        }}
 
-                                    }}
-                                />
-                            </Col>
+                                    />
+                                </Col>
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Data Nascimento"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={dataNascimento}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
 
-                        </Row>
-                        <Row className="mt-4">
-                            <Col sm={4} className="">
-                                <TextField
-                                    id="standard-basic"
-                                    label="Email"
-                                    style={{ width: "100%" }}
-                                    type="text"
-                                    value={email}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        readOnly: true,
-                                    }}
-                                />
-                            </Col>
-                            <Col sm={4} className="">
+                                        }}
+                                    />
+                                </Col>
 
-                                <TextField
-                                    id="standard-basic"
-                                    label="Contacto"
-                                    style={{ width: "100%" }}
-                                    type="text"
-                                    name="landNumber"
-                                    value={contacto}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        readOnly: true,
+                            </Row>
+                            <Row className="mt-4">
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Email"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={email}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
+                                        }}
+                                    />
+                                </Col>
+                                <Col sm={4} className="">
 
-                                    }}
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Contacto"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        name="landNumber"
+                                        value={contacto}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
 
-                                />
+                                        }}
 
-                            </Col>
-                            <Col sm={4} className="">
-                                <TextField
-                                    id="standard-basic"
-                                    label="Tipo de user"
-                                    style={{ width: "100%" }}
-                                    type="text"
-                                    value={props.detalhes?.tipo}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        readOnly: true,
+                                    />
 
-                                    }}
+                                </Col>
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Tipo de user"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={props.detalhes?.tipo}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
 
-                                />
-                            </Col>
+                                        }}
 
-                        </Row>
-                    </div>
+                                    />
+                                </Col>
+
+                            </Row>
+                            <Row className="mt-4">
+                                <Col sm={4} className="">
+
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Status"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        name="landNumber"
+                                        value={status}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true
+                                        }}
+
+                                    />
+
+                                </Col>
+                            </Row>
+
+                        </div>
+
+                        <div className='div-flexEnd-style'>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                type='submit'
+                                className={classes.button}
+                                startIcon={<PersonAddDisabledIcon />}
+                            >
+                                Desativar
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="default"
+                                className={classes.button}
+                                startIcon={<EditIcon />}
+                                onClick={() => {
+                                    setReadOnlyPropety(false)
+                                    setShowSave(true)
+                                }}
+                            >
+                                Edit
+                            </Button>
+                        </div>
+                    </form>
+
                 }
+
+
+
+
 
 
                 {
@@ -278,20 +383,32 @@ const DetalhesUser = (props) => {
                             <Col sm={4} className="" style={{ paddingTop: '10px' }}>
 
                                 <Form.Group as={Col} controlId="tipo">
-                                    <Form.Select Value={tipoUser}
+                                    <Form.Select
                                         onChange={(e) => { setTipoUser(e.target.value) }}
                                     >
-                                        <option>Administrador</option>
-                                        <option>Normal</option>
+                                        <option Value={'Administrador'}>Administrador</option>
+                                        <option Value={'Normal'} >Normal</option>
                                     </Form.Select>
                                 </Form.Group>
                             </Col>
 
                         </Row>
 
+
+                        <Row className="mt-4">
+                            <input
+                                className="form-control"
+                                type="text"
+                                value={valorID}
+                                hidden
+
+                            />
+                        </Row>
+
+
                         {
                             showSave &&
-                            <div className='div-flexEnd-style'>
+                            <div className='div-flexEnd-style' style={{ paddingTop: "20px" }}>
 
                                 <Button
                                     variant="contained"
@@ -316,36 +433,20 @@ const DetalhesUser = (props) => {
 
             </div>
 
-            {
-                !showSave &&
-                <div className='div-flexEnd-style'>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        startIcon={<DeleteIcon />}
-                    >
-                        Delete
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="default"
-                        className={classes.button}
-                        startIcon={<EditIcon />}
-                        onClick={() => {
-                            setReadOnlyPropety(false)
-                            setShowSave(true)
-                        }}
-                    >
-                        Edit
-                    </Button>
-                </div>
-            }
+
 
             <div>
                 <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
                     <Alert onClose={handleClose} >
                         Dados actualizados com sucesso
+                    </Alert>
+                </Snackbar>
+
+            </div>
+            <div>
+                <Snackbar open={open2} autoHideDuration={4000} onClose={handleClose2}>
+                    <Alert onClose={handleClose2} >
+                        User desabilitado
                     </Alert>
                 </Snackbar>
 
