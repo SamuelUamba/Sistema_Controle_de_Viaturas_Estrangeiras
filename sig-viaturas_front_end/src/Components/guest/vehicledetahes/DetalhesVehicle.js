@@ -1,20 +1,28 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
+import EditIcon from '@material-ui/icons/Edit';
 import PrintIcon from '@material-ui/icons/Print';
 import UpdateIcon from '@material-ui/icons/Update';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import Button from "@material-ui/core/Button";
+
 import { Link } from 'react-router-dom'
-import { Form, Row, Col, Card } from 'react-bootstrap';
+import { Form, Row, Col, Card, Button } from 'react-bootstrap';
 import { Grid } from '@material-ui/core';
-import { useState, useEffect, useRef } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
 
 
-const AddVeicle = () => {
 
-    const [loadingStatus, setLoadingStatus] = useState(true);
+const useStyles = makeStyles((theme) => ({
+    button: {
+        margin: theme.spacing(1),
+    },
+}));
+
+
+const VehicleDetails = (props) => {
+    const classes = useStyles();
+    const [readOnlyState, setreadOnlyState] = useState(true);
 
     //Região 
     const [nomeRegiao, setRegiao] = useState("");
@@ -35,7 +43,7 @@ const AddVeicle = () => {
     const [dataSaidaPrevista, setDataSaidaPrevista] = useState("");
     const [dataProrogacao, setDataProrogacao] = useState("");
     const [dataFimProrogacao, setDataFimProrogacao] = useState("");
-    const [status, setStatus] = useState("Não Prorogado");
+    const [status, setStatus] = useState("");
 
 
     //Viatura
@@ -58,7 +66,7 @@ const AddVeicle = () => {
 
     //Proprietario
     const [nomeproprietario, SetNomeprop] = useState("");
-    const [tempoPermanencia, setTempoPermanencia] = useState("30");
+    const [tempoPermanencia, setTempoPermanencia] = useState("");
     const [objectivo, setObjectivo] = useState("Turismo");
     const [email, setEmail] = useState("");
     const [contacto, setContacto] = useState("");
@@ -75,265 +83,22 @@ const AddVeicle = () => {
     const [Bairro, setBairro] = useState("");
     const [Avenida, setAvenida] = useState("");
 
-
     //Equipameto Auxiliar
     const [descricao, setDescricao] = useState("");
     const [marcaAuxiliar, SetMarcaAuxiliar] = useState("");
     const [modeloAuxiliar, setmodeloAuxiliar] = useState("");
     const [nrIdentificacao, setNrIdentificacao] = useState("");
     const [custoEstimadoAuxiliar, setCustoEstimadoAuxiliar] = useState("");
-
-    const [open, setOpen] = useState(false);
-
-    function Alert(props) {
-        return <MuiAlert elevation={6} variant="filled" {...props} />;
-    }
-    
-    const [age_now, setage_now] = useState("");
-
-    const calculate_age = (dateOfConstrution, today) => {
-        //   var today = new Date();
-        var dateOfConst = new Date(dateOfConstrution);
-        var age_now = today.getFullYear() - dateOfConst.getFullYear();
-        var m = today.getMonth() - dateOfConst.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < dateOfConst.getDate())) {
-            age_now--;
-        }
-        setage_now(age_now)
-    }
-    const [counter, setCounter] = useState(1)
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/counter', {
-            method: 'Get',
-            headers: {
-                "Content-type": "application/json",
-            }
-        }).then(resp => resp.json())
-            .then(resp => setCounter(resp))
-    }, [])
-
-
-
-
-
-    //  COMBOBOX REGIOES
+  
     const [regioes, listaregioes] = useState([]);
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/getregiao', {
-            method: 'Get',
-            headers: {
-                "Content-type": "application/json",
-            }
-        }).then(resp => resp.json())
-            .then(resp => listaregioes(resp))
-    }, [])
-
-    //  COMBOBOX FRONTEIRAS
     const [fronteiras, listafronteiras] = useState([]);
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/getinstancia/regiao/' + regiao_id, {
-            method: 'Get',
-            headers: {
-                "Content-type": "application/json",
-            }
-        }).then(resp => resp.json())
-            .then(resp => listafronteiras(resp))
-    }, [regiao_id])
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setCounter(counter + 1)
-        setLoadingStatus(false)
-
-        //Nacionalidade
-        const nacionalidade = {
-            nomePais: nomePaisNacionalidade,
-            proprietario_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/savenacionalidade', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(nacionalidade)
-        }).then(() => {
-            console.log('nacionalidade adicionada!')
-
-
-        })
-
-
-        //Local de Emissao da Carta de Conducao
-        const carta = {
-            dataEmissao,
-            pais: paisEmissao,
-            cidade: cidadeEmissao,
-            proprietario_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/savelocalemissaocarta', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(carta)
-        }).then(() => {
-            console.log('carta adicionada!')
-
-
-        })
-
-        // Controle de Entrada
-        const entrada = {
-            dataEntrada,
-            dataSaidaPrevista,
-            dataProrogacao: dataEntrada,
-            dataFimProrogacao: dataEntrada,
-            status,
-            controleEntrada_id: counter
-
-        };
-        fetch('http://127.0.0.1:8000/api/savecontroleentrada', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(entrada)
-        }).then(() => {
-            console.log('entrada adicionada!')
-
-        })
-
-
-
-        // Viatura
-        const Viatura = {
-            nrMatricula,
-            marca: marcaViatura,
-            modelo: modeloviatura,
-            tipo,
-            nrMotor,
-            nrChassi,
-            cor,
-            nrLugares,
-            custoEstimadoViatura,
-            controleEntrada_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/saveviatura2', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Viatura)
-        }).then(() => {
-            console.log('Viatura adicionada!')
-
-        })
-
-
-        // Proprietario
-        const Proprietario = {
-            nome: nomeproprietario,
-            tempoPermanencia: tempoPermanencia,
-            objectivo: objectivo,
-            email: email,
-            contacto: contacto,
-            nrCarta,
-            viatura_id: counter,
-            local_emissao_carta_id: counter,
-            nacionalidade_proprietario_id: counter,
-            regiao_id: regiao_id
-        };
-        fetch('http://127.0.0.1:8000/api/saveproprietario2', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Proprietario)
-        }).then(() => {
-            console.log('Proprietario adicionado!')
-
-        })
-
-      
-
-        // Endereco
-        const Endereco = {
-            pais: nomepaisEndereco,
-            cidade: cidadeEndereco,
-            Bairro,
-            Avenida,
-            proprietario_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/saveendereco2', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Endereco)
-        }).then(() => {
-            console.log('Endereco adicionado!')
-
-        })
-
-        // Equipamento
-        const Equipamento = {
-            descricao,
-            marca: marcaAuxiliar,
-            modelo: modeloAuxiliar,
-            nrIdentificacao,
-            custoEstimadoViatura: custoEstimadoAuxiliar,
-            viatura_id: counter
-        };
-        fetch('http://127.0.0.1:8000/api/saveequipamentoauxiliar', {
-            method: 'POST',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(Equipamento)
-        }).then(() => {
-            console.log('Equipamento adicionado!')
-            setNomePaisNacionalidade("")
-            setDataEntrada("")
-            setDataSaidaPrevista("")
-            setDataProrogacao("")
-            setDataFimProrogacao("")
-            setStatus("")
-            setRegiao("--Select--")
-            setNomeInstancia("--Select--")
-            setDataEmissao("")
-            setPais("")
-            setCidadeEmissao("")
-            setDescricao("")
-            SetMarcaAuxiliar("")
-            setmodeloAuxiliar("")
-            setNrIdentificacao("")
-            setCustoEstimadoAuxiliar("")
-            setNrMatricula("")
-            setMarcaviatura("")
-            setModeloviatura("")
-            setTipo("")
-            setNrMotor("")
-            setNrChassi("")
-            setCor("")
-            setNrLugares("")
-            setCustoEstimadoViatura("")
-            SetNomeprop("")
-            setTempoPermanencia("")
-            setObjectivo("")
-            setNrCarta("")
-            setEmail("")
-            setContacto("")
-            setNomePaisEndereco("")
-            setcidadeEndereco("")
-            setBairro("")
-            setAvenida("")
-            setOpen(true);
-            setLoadingStatus(true)
-        })
-
-
-    }
-
- 
 
     return (
         <div>
-
+            <h2>Formulário de entrada de veículos </h2>
             <div >
-                <Form onSubmit={handleSubmit}>
+                <Form >
 
                     <Card>
 
@@ -343,7 +108,7 @@ const AddVeicle = () => {
                                 <Form.Group as={Col} controlId="regiao">
                                     <Form.Label>Região</Form.Label>
                                     <Form.Select
-                                        required
+                                        ////required
                                         onChange={(e) => setRegiao_id(e.target.value)}
                                     >
                                         <option desabled selected>--Selecione--</option>
@@ -365,7 +130,7 @@ const AddVeicle = () => {
                                 <Form.Group as={Col} controlId="estancia">
                                     <Form.Label>Estância</Form.Label>
                                     <Form.Select
-                                        required
+                                       // required
                                         onChange={(e) => setInstancia_id(e.target.value)}
                                     >
                                         <option desabled selected>--Selecione--</option>
@@ -386,29 +151,26 @@ const AddVeicle = () => {
                                     <Form.Label>Data de Entrada</Form.Label>
                                     <input type="date"
                                         className="form-control"
-                                        required
+                                       // required
                                         value={dataEntrada}
-                                        onChange={(e) => {
-                                            setDataEntrada(e.target.value)
-                                        console.log(e.target.value)
-                                        }}
+                                        onChange={(e) => setDataEntrada(e.target.value)}
                                     />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="data_Saida">
-                                    <Form.Label>Data Prevista para Saida</Form.Label>
+                                    <Form.Label>Data de Saida</Form.Label>
                                     <input type="date"
                                         className="form-control"
-                                        required
+                                        //required
                                         value={dataSaidaPrevista}
                                         onChange={(e) => setDataSaidaPrevista(e.target.value)}
                                     />
                                 </Form.Group>
-                                {/* <Form.Group as={Col} controlId="data_Prorogacao">
+                                <Form.Group as={Col} controlId="data_Prorogacao">
                                     <Form.Label>Prorogação </Form.Label>
                                     <input type="date"
                                         className="form-control"
-                                        required
+                                       // required
                                         value={dataProrogacao}
                                         onChange={(e) => setDataProrogacao(e.target.value)}
                                     />
@@ -417,22 +179,22 @@ const AddVeicle = () => {
                                     <Form.Label> Fim Prorogação </Form.Label>
                                     <input type="date"
                                         className="form-control"
-                                        required
+                                       // required
                                         value={dataFimProrogacao}
                                         onChange={(e) => setDataFimProrogacao(e.target.value)}
                                     />
-                                </Form.Group> */}
+                                </Form.Group>
 
                                 <Form.Group as={Col} controlId="Status">
                                     <Form.Label>Status</Form.Label>
                                     <Form.Select
-                                        required
+                                        //required
                                         value={status}
                                         onChange={(e) => setStatus(e.target.value)}
                                     >
                                         <option >--Selecione--</option>
-                                        <option >Prorogado</option>
-                                        <option >Não Prorogado</option>
+                                        <option >On</option>
+                                        <option >OFF</option>
                                     </Form.Select>
                                 </Form.Group>
                             </Row>
@@ -447,7 +209,7 @@ const AddVeicle = () => {
                                     <Form.Label>Nome completo</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={nomeproprietario}
                                         onChange={(e) => SetNomeprop(e.target.value)}
                                     />
@@ -456,7 +218,7 @@ const AddVeicle = () => {
                                     <Form.Label>Nacionalidade</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={nomePaisNacionalidade}
                                         onChange={(e) => setNomePaisNacionalidade(e.target.value)}
 
@@ -470,7 +232,7 @@ const AddVeicle = () => {
                                         type="number"
                                         min="1"
                                         type="number"
-                                        required
+                                        //required
                                         value={nrCarta}
                                         onChange={(e) => setNrCarta(e.target.value)}
 
@@ -480,7 +242,7 @@ const AddVeicle = () => {
                                     <Form.Label>Local de Emissão</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={cidadeEmissao}
                                         onChange={(e) => setCidadeEmissao(e.target.value)}
 
@@ -490,7 +252,7 @@ const AddVeicle = () => {
                                     <Form.Label>Data de emissão</Form.Label>
                                     <input type="date"
                                         className="form-control"
-                                        required
+                                        //required
                                         value={dataEmissao}
                                         onChange={(e) => setDataEmissao(e.target.value)}
                                     />
@@ -499,7 +261,7 @@ const AddVeicle = () => {
                                     <Form.Label>Pais de emissão</Form.Label>
                                     <input type="text"
                                         className="form-control"
-                                        required
+                                        //required
                                         value={paisEmissao}
                                         onChange={(e) => setPais(e.target.value)}
                                     />
@@ -512,7 +274,7 @@ const AddVeicle = () => {
                                     <Form.Label>Cidade em Moçamique</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={cidadeEndereco}
                                         onChange={(e) => setcidadeEndereco(e.target.value)}
 
@@ -522,7 +284,7 @@ const AddVeicle = () => {
                                     <Form.Label>Bairro em Moçamique</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={Bairro}
                                         onChange={(e) => setBairro(e.target.value)}
 
@@ -532,7 +294,7 @@ const AddVeicle = () => {
                                     <Form.Label>Avenida em Moçamique</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={Avenida}
                                         onChange={(e) => setAvenida(e.target.value)}
 
@@ -540,35 +302,35 @@ const AddVeicle = () => {
                                 </Form.Group>
                             </Row>
                             <Row className="  mb-3" >
-                                {/*
+
                                 <Form.Group as={Col} controlId="duracao">
                                     <Form.Label>Duração da visita(Meses)</Form.Label>
                                     <input className="form-control"
                                         type="number"
-                                        required
+                                        //required
                                         min="1"
                                         value={tempoPermanencia}
                                         onChange={(e) => setTempoPermanencia(e.target.value)}
 
                                     />
-                                </Form.Group> */}
+                                </Form.Group>
 
                                 <Form.Group as={Col} controlId="Email">
                                     <Form.Label>Endereço Eletrónico</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="cell">
                                     <Form.Label>Contacto Telefonico</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={contacto}
-                                        onChange={(e) => setContacto(e.target.value)}
+                                     onChange={(e) => setContacto(e.target.value)}
 
                                     />
                                 </Form.Group>
@@ -590,7 +352,7 @@ const AddVeicle = () => {
                                                         type='radio'
                                                         value={item}
                                                         onChange={(e) => setObjectivo(e.target.value)}
-                                                        required
+                                                        //required
                                                     />
                                                 </Grid>
                                             ))}
@@ -612,7 +374,7 @@ const AddVeicle = () => {
                                     <Form.Label>Marca</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={marcaViatura}
                                         onChange={(e) => setMarcaviatura(e.target.value)}
                                     />
@@ -621,7 +383,7 @@ const AddVeicle = () => {
                                     <Form.Label>Modelo</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={modeloviatura}
                                         onChange={(e) => setModeloviatura(e.target.value)}
                                     />
@@ -630,7 +392,7 @@ const AddVeicle = () => {
                                     <Form.Label>Tipo</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={tipo}
                                         onChange={(e) => setTipo(e.target.value)}
                                     />
@@ -642,7 +404,7 @@ const AddVeicle = () => {
                                     <input className="form-control"
                                         type="number"
                                         min="1"
-                                        required
+                                        //required
                                         value={nrMotor}
                                         onChange={(e) => setNrMotor(e.target.value)}
 
@@ -653,7 +415,7 @@ const AddVeicle = () => {
                                     <Form.Label>Nº do quadro</Form.Label>
                                     <input className="form-control"
                                         type="number"
-                                        required
+                                        //required
                                         value={nrChassi}
                                         onChange={(e) => setNrChassi(e.target.value)}
                                     />
@@ -664,7 +426,7 @@ const AddVeicle = () => {
                                     <input className="form-control"
                                         type="number"
                                         min="0"
-                                        required
+                                        //required
                                         value={custoEstimadoViatura}
                                         onChange={(e) => setCustoEstimadoViatura(e.target.value)}
                                     />
@@ -677,7 +439,7 @@ const AddVeicle = () => {
                                     <Form.Label>Cor</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={cor}
                                         onChange={(e) => setCor(e.target.value)}
                                     />
@@ -688,7 +450,7 @@ const AddVeicle = () => {
                                     <input className="form-control"
                                         type="text"
                                         min="1"
-                                        required
+                                        //required
                                         value={nrLugares}
                                         onChange={(e) => setNrLugares(e.target.value)}
                                     />
@@ -698,7 +460,7 @@ const AddVeicle = () => {
                                     <Form.Label>Nº de Matricula</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={nrMatricula}
                                         onChange={(e) => setNrMatricula(e.target.value)}
                                     />
@@ -717,7 +479,7 @@ const AddVeicle = () => {
                                     <Form.Label>Decrição</Form.Label>
                                     <input className="form-control"
                                         type="text"
-                                        required
+                                        //required
                                         value={descricao}
                                         onChange={(e) => setDescricao(e.target.value)}
                                     />
@@ -728,7 +490,7 @@ const AddVeicle = () => {
                                     <input className="form-control"
 
                                         type="text"
-                                        required
+                                        //required
                                         value={marcaAuxiliar}
                                         onChange={(e) => SetMarcaAuxiliar(e.target.value)}
                                     />
@@ -737,7 +499,7 @@ const AddVeicle = () => {
                                 <Form.Group as={Col} controlId="modelo">
                                     <Form.Label>Modelo</Form.Label>
                                     <input className="form-control" type="text"
-                                        required
+                                        //required
                                         value={modeloAuxiliar}
                                         onChange={(e) => setmodeloAuxiliar(e.target.value)}
                                     />
@@ -746,7 +508,7 @@ const AddVeicle = () => {
                                     <Form.Label>Nº de id</Form.Label>
                                     <input className="form-control" type="number"
                                         min="1"
-                                        required
+                                        //required
                                         value={nrIdentificacao}
                                         onChange={(e) => setNrIdentificacao(e.target.value)}
                                     />
@@ -755,7 +517,7 @@ const AddVeicle = () => {
                                     <Form.Label>Valor em Mt</Form.Label>
                                     <input className="form-control" type="text"
                                         min="0"
-                                        required
+                                        //required
                                         value={custoEstimadoAuxiliar}
                                         onChange={(e) => setCustoEstimadoAuxiliar(e.target.value)}
                                     />
@@ -766,38 +528,143 @@ const AddVeicle = () => {
                         </Card.Body>
                     </Card>
                     <br></br>
-                    <div className='div-flexEnd-style'>
-
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="large"
-                            type='submit'
-                            disabled={!loadingStatus}
-                            startIcon={
-                                loadingStatus
-                                    ? (<SaveIcon />)
-                                    : (<Spinner animation="border" />)
-                            }
-                        >
-                            Salvar
-                        </Button>
-                    </div>
-                    <div>
-                        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-                            <Alert onClose={handleClose} >
-                                Dados guardados com sucesso
-                            </Alert>
-                        </Snackbar>
-
-                    </div>
-
+                    <button className="btn btn-secondary " ><EditIcon /> Actualizar</button>{'  '}
                 </Form>
-
-
             </div>
         </div >
     )
-}
+   
+        // <div>
+        //     <div className='div-detalhes-user'>
+        //         <div>
+        //             <AccountCircleIcon
+        //                 color="primary"
+        //                 style={{ fontSize: 150, margin: '0px 50px' }}
+        //             />
+        //         </div>
+        //         <div>
+        //             <Row className="mt-4">
+        //                 <Col sm={4} className="">
 
-export default AddVeicle
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Nome"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         name="landNumber"
+        //                         value={props.detalhes?.nome}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+
+        //                 </Col>
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Apelido"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.apelido}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+        //                 </Col>
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Data Nascimento"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.dataNascimento}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+        //                     />
+        //                 </Col>
+
+        //             </Row>
+        //             <Row className="mt-4">
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Email"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.email}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+        //                         }}
+        //                     />
+        //                 </Col>
+        //                 <Col sm={4} className="">
+
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Contacto"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         name="landNumber"
+        //                         value={props.detalhes?.contacto}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+
+        //                 </Col>
+        //                 <Col sm={4} className="">
+        //                     <TextField
+        //                         id="standard-basic"
+        //                         label="Tipo de user"
+        //                         style={{ width: "100%" }}
+        //                         type="text"
+        //                         value={props.detalhes?.tipo}
+        //                         InputLabelProps={{
+        //                             shrink: true,
+        //                             readOnly: true,
+
+        //                         }}
+
+        //                     />
+        //                 </Col>
+
+        //             </Row>
+        //         </div>
+        //     </div>
+        //     <div>
+        //         <Button
+        //             variant="contained"
+        //             color="secondary"
+        //             className={classes.button}
+        //             startIcon={<DeleteIcon />}
+        //         >
+        //             Delete
+        //         </Button>
+        //         <Button
+        //             variant="contained"
+        //             color="default"
+        //             className={classes.button}
+        //             startIcon={<EditIcon />}
+        //         >
+        //             Edit
+        //         </Button>
+        //     </div>
+        // </div>
+
+       // <div> Teste</div>
+    
+}
+export default VehicleDetails

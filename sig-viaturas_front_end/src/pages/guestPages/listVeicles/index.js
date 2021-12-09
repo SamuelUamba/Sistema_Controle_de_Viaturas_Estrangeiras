@@ -1,12 +1,14 @@
 import React from 'react';
-import ListVeicle from '../../../Components/guest/ListVeicle';
+import VehicleTable from '../../../Components/guest/VehicleTable';
 import SideBarComponent from '../../../Components/SidebarComponent/SideBarComponent';
 
 const ListVeiclePage = () => {
     return (
         <div>
             <SideBarComponent
-                componente={<ListVeicle />}
+                componente={<VehicleTable
+                    tamanho={5}
+                />}
             />
         </div>
     )

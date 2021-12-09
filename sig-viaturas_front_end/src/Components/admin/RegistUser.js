@@ -313,6 +313,7 @@ const RegistUser = () => {
                                 <Form.Label></Form.Label>
                                 <input
                                     className="form-control"
+                                    
                                     type="password"
                                     value={senhaUser}
                                     name='senhaUser'

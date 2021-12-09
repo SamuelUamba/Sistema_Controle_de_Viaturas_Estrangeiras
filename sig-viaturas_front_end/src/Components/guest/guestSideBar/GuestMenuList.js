@@ -6,10 +6,7 @@ import CommuteIcon from '@material-ui/icons/Commute';
 import ListIcon from '@material-ui/icons/List';
 
 
-
-
-
-export const SideBarMenuList = [
+export const GuestMenuList = [
     {
         title: "Dashboard",
         url: "/user/dashboard",
@@ -18,29 +15,20 @@ export const SideBarMenuList = [
         id: 1
     },
     {
-        title: "Entrada de veículos",
+        title: "Adicionar Entrada",
         url: "/user/addVeicle",
         icon: <CommuteIcon />,
         cName: "nav-text",
         id: 3
     },
     {
-        title: "Lista de veículos",
-        url: "/user/listVehicle",
+        title: "Lista de Vehiculos",
+        url: "/user/listvehicle",
         icon: <ListIcon />,
         cName: "nav-text",
         id: 4
-    },
-
-    // {
-    //     title: "Lista de proprietários",
-    //     url: "/listaProprietario",
-    //     icon: <CgUserList />,
-    //     cName: "nav-text",
-    //     id: 5
-    // }
-
+    }
 ]
 
-export default SideBarMenuList
+export default GuestMenuList
 
