@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import SaveIcon from '@material-ui/icons/Save';
 import PrintIcon from '@material-ui/icons/Print';
 import UpdateIcon from '@material-ui/icons/Update';
+import Button from '@material-ui/core/Button';
 
 import { Link } from 'react-router-dom'
-import { Form, Row, Col, Card, Button } from 'react-bootstrap';
+import { Form, Row, Col, Card, Collapse } from 'react-bootstrap';
 import { Grid } from '@material-ui/core';
 import { useState, useEffect, useRef } from 'react';
 import VehicleTable from './VehicleTable';
@@ -14,6 +15,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import { makeStyles } from '@material-ui/core/styles';
 import Spinner from 'react-bootstrap/Spinner';
 import MaterialTable from 'material-table';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,8 +26,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Prorogacao = () => {
-
-
 
     //Entrada
     const [dataEntrada, setDataEntrada] = useState("");
@@ -66,7 +66,7 @@ const Prorogacao = () => {
         }).then(resp => resp.json())
             .then(resp => lista(resp))
     }, [selecioado_id])
-    
+
 
     // Dados de Proprietario
     const [dadosproprietario, setDadosproprietario] = useState([]);
@@ -81,19 +81,19 @@ const Prorogacao = () => {
     }, [selecioado_id])
     console.log('Dados', setDadosproprietario)
 
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         // Controle de Entrada
         const entrada = {
             dataEntrada: lista.dataEntrada,
-            dataSaidaPrevista:lista.dataSaidaPrevista,
+            dataSaidaPrevista: lista.dataSaidaPrevista,
             dataProrogacao,
             dataFimProrogacao,
             status,
             controleEntrada_id: selecioado_id,
-            id:lista.id
+            id: lista.id
         };
         fetch(`http://127.0.0.1:8000/api/editcontroleentrada/${selecioado_id}`, {
             method: 'PUT',
@@ -139,6 +139,7 @@ const Prorogacao = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [filter, setFilter] = useState(false);
 
 
 
@@ -175,15 +176,12 @@ const Prorogacao = () => {
 
         }
     ];
+
     if (error1) {
         return <span>ERROR: {error1.message}</span>
     }
     if (loading1) {
-        return (
-            <div style={{ paddingTop: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Spinner animation="border" variant="primary" />
-            </div>
-        )
+
     }
 
 
@@ -191,28 +189,65 @@ const Prorogacao = () => {
     return (
         <div>
 
+            <div className='div-flexEnd-style'>
+
+                <div className="filter-style">
+                    <Button
+                        name="Basic button"
+                        value="default"
+                        size="medium"
+                        onClick={() => {
+
+                            setFilter(!filter)
+                        }}
+                        aria-expanded={filter}
+                        aria-controls="collapse-filter"
+                        title="Filtrar"
+                    >
+
+                        {/* <VisibilityIcon color="primary" style={{ fontSize: 30 }} /> */}
+                        {filter ? (
+                            <VisibilityOffIcon color="primary" style={{ fontSize: 30 }} />
+
+                        ) : (
+                            <VisibilityIcon color="primary" style={{ fontSize: 30 }} />
+                        )}
+                    </Button>
+                </div>
+            </div>
+            <Collapse in={filter}>
+                <div>
+
+                    {
+                        usersList &&
+                        <MaterialTable
+                            title="Lista de Viatúras"
+                            data={usersList}
+                            columns={columns}
+                        />
+                    }
+                    {
+                        loading1 &&
+
+                        <div style={{ paddingTop: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Spinner animation="border" variant="primary" />
+                        </div>
+                    }
+
+                </div>
+            </Collapse>
+
+
             <div >
                 <Form onSubmit={handleSubmit}>
-                    <Card>
-                        <Card.Body>
-                            <div>
 
-                                {
-                                    usersList &&
-                                    <MaterialTable
-                                        title="Lista de Viatúras"
-                                        data={usersList}
-                                        columns={columns}
-                                    />
-                                }
-
-                            </div>
-                        </Card.Body>
-                    </Card>
                     <Card>
+                        <Card.Header>
+                            Dados da prorogação
+                        </Card.Header>
                         <Card.Body>
-                           
-                   
+
+
                             <Row className="mb-3">
                                 <Form.Group as={Col} controlId="data">
                                     <Form.Label>Data de Prorogação</Form.Label>
@@ -247,9 +282,21 @@ const Prorogacao = () => {
                                 </Form.Group>
                             </Row>
                         </Card.Body>
+                        <div className='div-flexEnd-style'>
+                            <Button variant="contained"
+                                color="primary"
+                                size="large"
+                                startIcon={
+                                    <UpdateIcon />
+                                }
+                            >
+                                Prorogar
+                            </Button>
+
+                        </div>
+
                     </Card>
-                    <br></br>
-                    <button className="btn btn-secondary " ><UpdateIcon /> Prorogar</button>{'  '}
+
                 </Form>
 
 

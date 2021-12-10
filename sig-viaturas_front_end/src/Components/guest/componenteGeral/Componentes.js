@@ -17,6 +17,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import AddVeicle from '../AddVeicle';
 import Prorogacao from '../Prorogacao';
+import SaidaViatura from '../gestaoSaidas/SaidaViatura';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -82,6 +85,7 @@ export default function Componentes() {
                 >
                     <Tab label="Entrada de veículos" icon={<DriveEtaIcon />} {...a11yProps(0)} />
                     <Tab label="Prorogação da estadia" icon={<DateRangeIcon />} {...a11yProps(1)} />
+                    <Tab label="Saída de veículos " icon={<LocalShippingIcon />} {...a11yProps(2)} />
 
                 </Tabs>
             </AppBar>
@@ -89,9 +93,11 @@ export default function Componentes() {
                 <AddVeicle />
             </TabPanel>
             <TabPanel value={value} index={1}>
-               <Prorogacao 
-               tamanho={2}
-               />
+                <Prorogacao />
+            </TabPanel>
+
+            <TabPanel value={value} index={2}>
+                <  SaidaViatura />
             </TabPanel>
 
         </div>

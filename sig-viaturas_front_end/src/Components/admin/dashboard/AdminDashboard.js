@@ -250,17 +250,7 @@ const AdminDashboard = () => {
             </div>
             <div id='userLogin' >
 
-                {/* <DetailsCard
-                    border={'primary'}
 
-                    icon={<CommuteIcon
-                        color="primary"
-                        style={{ fontSize: 50, margin: '2px 2px 2px 2px', display: 'flex', alignItems: 'center', justifyContent: 'right' }}
-                    />}
-                    title={"Usuário actual"}
-                    value={"User"}
-
-                /> */}
             </div>
 
             <div id='titulo'>
@@ -290,8 +280,26 @@ const AdminDashboard = () => {
 
             </div>
 
+            <div id='titulo4'>
+                <Typography color="primary" gutterBottom>
+                    <h6 style={{ paddingTop: "10px" }} >Veiculos com data de saída vencida</h6>
+                </Typography>
+            </div>
+            <div id='titulo5'>
+                <Typography color="primary" gutterBottom>
+                    <h6 style={{ paddingTop: "10px" }} >Lista de veículos prorogado </h6>
+                </Typography>
+            </div>
+
+
             <div id='others' >
                 <UserTable />
+            </div>
+            <div id='others2' >
+
+            </div>
+            <div id='others3' >
+
             </div>
         </div>
     )

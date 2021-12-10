@@ -8,24 +8,24 @@
 .container2 {
     display: grid;
     margin: 5px 5px 5px 5px !important;
-    height: 160vh;
+    height: 320vh;
     width: 100%;
-    grid-template-columns: 1fr 1fr 1fr 1.5fr;
-    grid-template-rows: 1.2fr 0.3fr 1.8fr 0.3fr 1.2fr;
+    grid-template-columns: 1.3fr 1fr 1fr 1.5fr;
+    grid-template-rows: 1.2fr 0.3fr 1.8fr 0.3fr 1.2fr 0.3fr 1.2fr 1.2fr;
     grid-template-areas:
         "quantitiesResume quantitiesResume quantitiesResume userLogin"
         "titulo titulo titulo titulo2"
         "graphic graphic graphic usersList"
         "titulo3 titulo3 titulo3 titulo3"
         "others others others others"
+        "titulo4 titulo5 titulo5 titulo5"
+        "others2 others3 others3 others3"
+        "others2 others3 others3 others3"
     ;
     grid-gap: 0.6rem;
     margin-bottom: 30px;
 
 }
-
-
-
 
 
 
@@ -101,6 +101,34 @@
         -10px 0 10px -4px #aca4a4;
 }
 
+#titulo4 {
+    background: white;
+    grid-area: titulo4;
+    border-radius: 10px;
+
+}
+
+#titulo4:hover {
+
+    box-shadow: 10px 0 10px -4px #aca4a4,
+        -10px 0 10px -4px #aca4a4;
+}
+
+#titulo5 {
+    background: white;
+    grid-area: titulo5;
+    border-radius: 10px;
+
+}
+
+#titulo5:hover {
+
+    box-shadow: 10px 0 10px -4px #aca4a4,
+        -10px 0 10px -4px #aca4a4;
+}
+
+
+
 #usersList {
     grid-area: usersList;
     background: white;
@@ -121,7 +149,6 @@
     grid-area: others;
     background: white;
     border-radius: 10px;
-    margin-bottom: 30px;
 
 }
 
@@ -131,6 +158,43 @@
         -10px 0 10px -4px #aca4a4;
 
 }
+
+
+
+#others2 {
+
+    grid-area: others2;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 30px;
+
+}
+
+#others2:hover {
+
+    box-shadow: 10px 0 10px -4px #aca4a4,
+        -10px 0 10px -4px #aca4a4;
+
+}
+
+#others3 {
+
+    grid-area: others3;
+    background: white;
+
+    border-radius: 10px;
+    margin-bottom: 30px;
+
+}
+
+#others3:hover {
+
+    box-shadow: 10px 0 10px -4px #aca4a4,
+        -10px 0 10px -4px #aca4a4;
+
+}
+
+
 
 
 

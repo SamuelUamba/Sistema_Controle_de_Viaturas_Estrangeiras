@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, InputLabel, MenuItem, Select, TextField }
     from "@material-ui/core";
 import { Col, Row } from "react-bootstrap";
@@ -13,6 +13,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useParams } from 'react-router-dom';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -31,7 +33,7 @@ const DetalhesUser = (props) => {
     const { id } = useParams();
 
     const classes = useStyles();
-    const [valorID, setValorID] = useState(props.id);
+    const [valorID, setValorID] = useState(props.detalhes?.id);
     const [readOnlyState, setreadOnlyState] = useState(true);
     const [readOnlyProperty, setReadOnlyPropety] = useState(false);
     const [showSave, setShowSave] = useState(false);
@@ -49,7 +51,16 @@ const DetalhesUser = (props) => {
     const [senhaUser, setsenhaUser] = useState(props.detalhes?.password);
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [abilitar, setAbilitar] = useState(false)
 
+    useEffect(() => {
+        if (status == 'Activo') {
+            setAbilitar(true)
+        } else {
+            setAbilitar(false)
+        }
+
+    }, [])
 
 
     const handleClose = (event, reason) => {
@@ -140,6 +151,38 @@ const DetalhesUser = (props) => {
 
     }
 
+    const abilitarUser = (e) => {
+        e.preventDefault();
+        setLoadingStatus(false);
+
+        const user = {
+            nome: nome,
+            apelido: apelido,
+            dataNascimento: dataNascimento,
+            contacto: contacto,
+            email: email,
+            password: senhaUser,
+            tipo: tipoUser,
+            status: 'Activo',
+            id: valorID
+        }
+
+        fetch(`http://localhost:8000/api/editusuario/${valorID}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        }).then(() => {
+            console.log("User desabilitado");
+            setOpen2(true);
+            setLoadingStatus2(true)
+        })
+
+        console.log('user', user)
+
+
+    }
 
 
 
@@ -155,7 +198,7 @@ const DetalhesUser = (props) => {
                     />
                 </div>
                 {
-                    !showSave &&
+                    !showSave && abilitar &&
                     <form onSubmit={desabilitarUser}>
 
                         <div>
@@ -281,15 +324,37 @@ const DetalhesUser = (props) => {
                         </div>
 
                         <div className='div-flexEnd-style'>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                type='submit'
-                                className={classes.button}
-                                startIcon={<PersonAddDisabledIcon />}
-                            >
-                                Desativar
-                            </Button>
+
+                            {
+                                abilitar &&
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    type='submit'
+                                    className={classes.button}
+                                    startIcon={<PersonAddDisabledIcon />}
+                                >
+                                    Desativar
+                                </Button>
+
+                            }
+
+                            {
+                                !abilitar &&
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type='submit'
+                                    className={classes.button}
+                                    startIcon={<PersonAddIcon />}
+                                >
+                                    Activar
+                                </Button>
+
+                            }
+
+
+
                             <Button
                                 variant="contained"
                                 color="default"
@@ -307,7 +372,167 @@ const DetalhesUser = (props) => {
 
                 }
 
+                {
+                    !showSave && !abilitar &&
+                    <form onSubmit={abilitarUser}>
 
+                        <div>
+                            <Row className="mt-4">
+                                <Col sm={4} className="">
+
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Nome"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        name="landNumber"
+                                        value={nome}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
+
+                                        }}
+
+                                    />
+
+                                </Col>
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Apelido"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={apelido}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
+
+                                        }}
+
+                                    />
+                                </Col>
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Data Nascimento"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={dataNascimento}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
+
+                                        }}
+                                    />
+                                </Col>
+
+                            </Row>
+                            <Row className="mt-4">
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Email"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={email}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
+                                        }}
+                                    />
+                                </Col>
+                                <Col sm={4} className="">
+
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Contacto"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        name="landNumber"
+                                        value={contacto}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
+
+                                        }}
+
+                                    />
+
+                                </Col>
+                                <Col sm={4} className="">
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Tipo de user"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        value={props.detalhes?.tipo}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true,
+
+                                        }}
+
+                                    />
+                                </Col>
+
+                            </Row>
+                            <Row className="mt-4">
+                                <Col sm={4} className="">
+
+                                    <TextField
+                                        id="standard-basic"
+                                        label="Status"
+                                        style={{ width: "100%" }}
+                                        type="text"
+                                        name="landNumber"
+                                        value={status}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            readOnly: true
+                                        }}
+
+                                    />
+
+                                </Col>
+                            </Row>
+
+                        </div>
+
+                        <div className='div-flexEnd-style'>
+
+
+                            {
+                                !abilitar &&
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type='submit'
+                                    className={classes.button}
+                                    startIcon={<PersonAddIcon />}
+                                >
+                                    Activar
+                                </Button>
+
+                            }
+
+
+
+                            <Button
+                                variant="contained"
+                                color="default"
+                                className={classes.button}
+                                startIcon={<EditIcon />}
+                                onClick={() => {
+                                    setReadOnlyPropety(false)
+                                    setShowSave(true)
+                                }}
+                            >
+                                Edit
+                            </Button>
+                        </div>
+                    </form>
+
+                }
 
 
 
