@@ -62,12 +62,14 @@ const Login = () => {
 
             if (usersList[i]?.nome == userTyped
                 && usersList[i]?.password == passwordTyped
-                && usersList[i]?.tipo == 'Normal') {
+                && usersList[i]?.tipo == 'Normal'
+                && usersList[i]?.status == 'Activo') {
                 navigate('/user/addVeicle');
             }
             if (usersList[i]?.nome == userTyped
                 && usersList[i]?.password == passwordTyped
-                && usersList[i]?.tipo == 'Administrador') {
+                && usersList[i]?.tipo == 'Administrador'
+                && usersList[i]?.status == 'Activo') {
                 navigate('/admin/dashboard');
             }
         }
